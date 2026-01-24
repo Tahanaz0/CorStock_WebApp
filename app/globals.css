@@ -1,0 +1,107 @@
+@import "tailwindcss";
+
+/* Local fonts (from app/assets/fonts/static) */
+@font-face {
+  font-family: "Satoshi";
+  src: url("./assets/fonts/static/Satoshi-Regular.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Satoshi";
+  src: url("./assets/fonts/static/Satoshi-Medium.otf") format("opentype");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Satoshi";
+  src: url("./assets/fonts/static/Satoshi-Bold.otf") format("opentype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Manrope";
+  src: url("./assets/fonts/Manrope-VariableFont_wght.ttf")
+    format("truetype-variations");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "ManropeLocal";
+  src: url("./assets/fonts/static/Manrope-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "ManropeLocal";
+  src: url("./assets/fonts/static/Manrope-Medium.ttf") format("truetype");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "ManropeLocal";
+  src: url("./assets/fonts/static/Manrope-Bold.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+.page-container {
+  @apply px-2 py-12 pb-2 sm:px-4 sm:py-2 sm:pb-4 md:px-4 md:py-4 md:pb-8;
+  min-height: 100vh;
+}
+
+/* Global font: prefer Satoshi (add font files to /public/fonts if needed). */
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Satoshi;
+}
+
+.satoshi-font {
+  font-family: "Satoshi";
+}
+
+.manrope-font {
+  font-family: "ManropeLocal";
+}
+
+/* Modal overlay for gray background */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5); /* Gray background */
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  z-index: 10;
+}

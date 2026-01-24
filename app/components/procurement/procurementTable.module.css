@@ -1,0 +1,79 @@
+.paper {
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.statusBadge {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.pagination {
+  display: flex;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  border-top: 1px solid #e5e7eb;
+}
+
+.paginationButton {
+  border: 1px solid #cdd5df;
+  border-radius: 8px;
+  padding: 6px 12px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: #fff;
+}
+
+.paid {
+  color: #087442;
+  background-color: #edfcf2;
+}
+
+.pending {
+  color: #087442;
+  background-color: #edfcf2;
+}
+
+.unpaid {
+  color: #ba3a14;
+  background-color: #fffaeb;
+}
+
+.critical {
+  color: #ba3a14;
+  background-color: #fffaeb;
+}
+
+.suspended {
+  color: #b6271f;
+  background-color: #fef3f2;
+}
+
+.overstock {
+  color: #b6271f;
+  background-color: #fef3f2;
+}
+
+.active {
+  color: #087442;
+  background-color: #edfcf2;
+}
+
+.trial {
+  color: #ba3a14;
+  background-color: #fffaeb;
+}
+
+.expired {
+  color: #b6271f;
+  background-color: #fef3f2;
+}
+
+.suspendedStatus {
+  color: #4432d0;
+  background-color: #f2f4f7;
+}
