@@ -9,15 +9,24 @@ import { useForm } from "@mantine/form";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch } from "@/redux/store";
+import { RootState } from "../../../redux/store";
+import { requestPasswordReset } from "@/redux/actions/auth-action/auth-action";
 
 const ResetYourPassword = () => {
+  const dispatch: AppDispatch = useDispatch();
   const router = useRouter();
+
+  const loading = useSelector((state: RootState) => state.auth.loading);
 
   const loginSchema = z.object({
     email: z.string().email("Please enter a valid email"),
   });
 
-  type LoginSchemaType = z.infer<typeof loginSchema>;
+  type LoginSchemaType = {
+    email: string;
+  };
 
   const form = useForm<LoginSchemaType>({
     initialValues: { email: "" },
@@ -35,17 +44,21 @@ const ResetYourPassword = () => {
     },
   });
 
-  const handleLogin = (values: LoginSchemaType) => {
-    console.log("Login values:", values);
-    toast.success("Password reset link sent to your email!");
-    // The actual login logic would go here.
-    setTimeout(() => {
-      router.push("/");
-    }, 1500);
+  const handleReset = async (value: LoginSchemaType) => {
+    try {
+      await dispatch(requestPasswordReset(value));
+      toast.success("Password reset link sent to your email!");
+      setTimeout(() => {
+        router.push("/verifyemail");
+      }, 1000);
+    } catch (error) {
+      console.log(error);
+      toast.error("Something Went Wrong to sent OTP");
+    }
   };
 
   return (
-    <div className="w-full max-w-lg mx-auto px-4 mt-40 md:mt-0 satoshi-font">
+    <div className="w-full max-w-lg mx-auto px-4 satoshi-font">
       {/* Heading */}
       <div className="mb-8 text-left">
         <h1 className="text-3xl md:text-4xl font-semibold mb-2 manrope-font">
@@ -57,7 +70,7 @@ const ResetYourPassword = () => {
       </div>
 
       {/* Email input form */}
-      <form onSubmit={form.onSubmit(handleLogin)}>
+      <form onSubmit={form.onSubmit(handleReset)}>
         <div className="space-y-4">
           <TextInput
             label="Email"
@@ -67,13 +80,14 @@ const ResetYourPassword = () => {
             styles={{
               label: { color: "#364152", fontWeight: 500 },
             }}
-            // disabled={loading}
+            size="sm"
+            disabled={loading}
           />
 
           <Button
             type="submit"
-            // loading={loading}
-            // disabled={loading}
+            loading={loading}
+            disabled={loading}
             fullWidth
             style={{
               backgroundColor: "#FF8A3D",
@@ -82,7 +96,6 @@ const ResetYourPassword = () => {
             }}
           >
             Submit
-            {/* {loading ? "Logging in..." : "Login"} */}
           </Button>
 
           <p className="text-sm text-center font-medium text-[#697586]">

@@ -1,11 +1,23 @@
 "use client";
-
-import { TextInput, Button, Text, Anchor } from "@mantine/core";
+import { TextInput, Button, Text, Anchor, Stack } from "@mantine/core";
 import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
+import { useRouter } from "next/navigation";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "react-toastify";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch } from "@/redux/store";
+import { RootState } from "../../../redux/store";
+import {
+  requestPasswordReset,
+  verifyOtpPass,
+} from "@/redux/actions/auth-action/auth-action";
+
+interface verifyOtpPassType {
+  email: string;
+  otp: string;
+}
 
 /* ---------------- Zod Schema ---------------- */
 const otpSchema = z.object({
@@ -18,6 +30,14 @@ const otpSchema = z.object({
 type OtpFormType = z.infer<typeof otpSchema>;
 
 const VerificationCodeForm = () => {
+  const getEmailRedux: string | null = useSelector(
+    (state: RootState) => state.auth.requestPassEmail,
+  );
+  const loading = useSelector((state: RootState) => state.auth.loading);
+
+  const dispatch: AppDispatch = useDispatch();
+  const router = useRouter();
+
   const [timeLeft, setTimeLeft] = useState(30);
 
   const {
@@ -42,10 +62,8 @@ const VerificationCodeForm = () => {
   /* ---------------- OTP CHANGE ---------------- */
   const handleOtpChange = (index: number, value: string) => {
     if (!/^\d?$/.test(value)) return;
-
     const otpArray = otpValue.split("");
     otpArray[index] = value;
-
     const updatedOtp = otpArray.join("").slice(0, 6);
     setValue("otp", updatedOtp);
 
@@ -55,21 +73,45 @@ const VerificationCodeForm = () => {
   };
 
   /* ---------------- SUBMIT ---------------- */
-  const onSubmit = (data: OtpFormType) => {
-    console.log("Submitted OTP:", data.otp);
+  const onSubmit = async (data: OtpFormType) => {
+    const paramsData: verifyOtpPassType = {
+      email: `${getEmailRedux}`,
+      otp: data.otp,
+    };
 
-    if (data.otp === "123456") {
-      toast.success("OTP verified successfully!");
-    } else {
-      toast.error("Invalid OTP. Please try again.");
+    try {
+      await dispatch(verifyOtpPass(paramsData));
+      toast.success("OTP Verified!");
+      setTimeout(() => {
+        router.push(`/forgotPassword/${paramsData.otp}`);
+      }, 1000);
+    } catch (error) {
+      console.log("Error to check otp", error);
+      toast.error("Wrong OTP");
     }
   };
 
   return (
-    <div className="w-full max-w-144.5 flex flex-col gap-3 text-center px-4 sm:px-0 overflow-x-hidden">
-      <form onSubmit={handleSubmit(onSubmit)} className="w-full">
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      style={{
+        width: "100%",
+        maxWidth: "500px",
+        margin: "0 auto",
+        padding: "0 16px",
+      }}
+    >
+      <Stack gap="lg" mt={{ base: "xl", sm: 0 }}>
         {/* OTP INPUTS */}
-        <div className="flex justify-center gap-2 sm:gap-3 my-5 overflow-x-auto">
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            gap: "clamp(6px, 2vw, 12px)",
+            flexWrap: "nowrap",
+          }}
+        >
           {Array.from({ length: 6 }).map((_, index) => (
             <React.Fragment key={index}>
               <TextInput
@@ -78,90 +120,94 @@ const VerificationCodeForm = () => {
                 onChange={(e) => handleOtpChange(index, e.target.value)}
                 maxLength={1}
                 autoComplete="one-time-code"
+                autoFocus
                 placeholder="0"
                 styles={{
                   input: {
-                    width: 50,
-                    height: 50,
+                    width: "clamp(40px, 10vw, 60px)",
+                    height: "clamp(40px, 10vw, 60px)",
                     textAlign: "center",
-                    fontSize: "24px",
+                    fontSize: "clamp(18px, 5vw, 40px)",
                     fontWeight: 600,
                     fontFamily: "Manrope, sans-serif",
                     borderRadius: 8,
-                    border: "1px solid #FF8A3D",
+                    border: "2px solid #FF8A3D",
                     color: "#FF8A3D",
                     padding: 0,
                   },
                 }}
               />
-
-              {/* DASH — UI SAME, WIDTH REMOVED */}
+              {/* DASH */}
               {index === 2 && (
-                <span
+                <Text
                   style={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    fontSize: "2rem",
+                    fontSize: "clamp(18px, 5vw, 24px)",
                     fontWeight: 600,
-                    color: "#adb5bd",
+                    color: "gray",
+                    flexShrink: 0,
                   }}
                 >
                   -
-                </span>
+                </Text>
               )}
             </React.Fragment>
           ))}
         </div>
 
         {errors.otp && (
-          <Text className="text-red-500 text-sm mb-2">
+          <Text c="red" size="sm" ta="center">
             {errors.otp.message}
           </Text>
         )}
 
         <Button
           type="submit"
+          fullWidth
           styles={{
             root: {
-              width: "100%",
-              height: 40,
-              borderRadius: 8,
-              border: "1px solid #FF8A3D",
               backgroundColor: "#FF8A3D",
-              color: "black",
+              borderRadius: 8,
+              height: 48,
+              fontSize: 16,
               fontWeight: 600,
             },
           }}
+          loading={loading}
+          disabled={loading}
         >
           Verify OTP
         </Button>
-      </form>
 
-      {/* RESEND OTP */}
-      <div className="flex justify-center mt-3">
-        <Text size="sm" color="#697586" fw={600}>
-          Didn&apos;t receive the email?
+        {/* RESEND OTP */}
+        <Text size="sm" ta="center" c="dimmed">
+          Didn&apos;t receive the email?{" "}
           {timeLeft > 0 ? (
-            <Text component="span" color="#FF8A3D" fw={600} ml={4}>
+            <Text span c="#FF8A3D" fw={600}>
               {timeLeft}s
             </Text>
           ) : (
             <Anchor
-              component="button"
-              ml={4}
+              c="#FF8A3D"
               fw={600}
-              color="#FF8A3D"
-              onClick={() => {
-                setTimeLeft(30);
+              onClick={async () => {
+                try {
+                  await dispatch(
+                    requestPasswordReset({ email: `${getEmailRedux}` }),
+                  );
+                  toast.success("OTP sent again!");
+                  setTimeLeft(30);
+                } catch {
+                  toast.error("Failed to resend OTP");
+                }
               }}
+              style={{ cursor: "pointer" }}
             >
               Resend OTP
             </Anchor>
           )}
         </Text>
-      </div>
-    </div>
+      </Stack>
+    </form>
   );
 };
 

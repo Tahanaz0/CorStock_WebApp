@@ -13,6 +13,10 @@ import { z } from "zod";
 import { toast } from "react-toastify";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch } from "../../../redux/store";
+import { RootState } from "../../../redux/store";
+import { loginUserAction } from "@/redux/actions/auth-action/auth-action";
 
 const loginSchema = z.object({
   email: z.string().email("Please enter a valid email"),
@@ -24,6 +28,9 @@ type LoginSchemaType = z.infer<typeof loginSchema>;
 
 // ----------------- LoginForm Component -----------------
 const LoginForm = () => {
+  const dispatch: AppDispatch = useDispatch();
+  const loading = useSelector((state: RootState) => state.auth.loading);
+
   const router = useRouter();
 
   const form = useForm<LoginSchemaType>({
@@ -47,18 +54,21 @@ const LoginForm = () => {
     },
   });
 
-  const handleLogin = (values: LoginSchemaType) => {
-    localStorage.setItem(
-      "userData",
-      JSON.stringify({ email: values.email, password: values.password }),
-    );
-
-    console.log("Login values:", values);
-    toast.success("Login Successfully");
-    // The actual login logic would go here.
-    setTimeout(() => {
-      router.push("/");
-    }, 1000);
+  const handleLogin = async (values: LoginSchemaType) => {
+    try {
+      await form.validate();
+      const res = await dispatch(loginUserAction(values));
+      if (res) {
+        toast.success("Login Successfully");
+        router.push("/");
+      }
+    } catch (error: unknown) {
+      const message =
+        error instanceof Error
+          ? error.message
+          : "Login failed. Please try again.";
+      toast.error(message);
+    }
   };
 
   return (
@@ -71,14 +81,14 @@ const LoginForm = () => {
             placeholder="Enter Email Address"
             {...form.getInputProps("email")}
             style={{ color: "#364152", fontWeight: "500" }}
-            // disabled={loading}
+            disabled={loading}
           />
           <PasswordInput
             label="Password"
             placeholder="Enter Password"
             {...form.getInputProps("password")}
             style={{ color: "#364152", fontWeight: "500" }}
-            // disabled={loading}
+            disabled={loading}
           />
 
           <div className="flex items-center justify-between">
@@ -114,8 +124,8 @@ const LoginForm = () => {
             type="submit"
             className="manrope-font"
             fullWidth
-            // loading={loading}
-            // disabled={loading}
+            loading={loading}
+            disabled={loading}
             style={{
               backgroundColor: "#FF8A3D",
               color: "black",

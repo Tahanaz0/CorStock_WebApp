@@ -2,12 +2,19 @@
 
 import React from "react";
 import Image from "next/image";
-import ResetYourPassword from "../components/reset-forget-Password/resetYourPassword";
-import LoginImageBase from "../assets/images/loginImage-base.png";
-import LoginImageFront from "../assets/images/loginImage-Front.png";
-import LoginImageLogo from "../assets/images/loginImage-logo.png";
+import PasswordReset from "../../components/reset-forget-Password/passwordReset";
+import LoginImageBase from "../../assets/images/loginImage-base.png";
+import LoginImageFront from "../../assets/images/loginImage-Front.png";
+import LoginImageLogo from "../../assets/images/loginImage-logo.png";
 
-const ResetPassword = () => {
+interface PageProps {
+  params: {
+    otp: string;
+  };
+}
+
+const ResetPassword = async ({ params }: PageProps) => {
+  const { otp } = await params;
   return (
     <section className="grid items-center justify-center min-h-screen satoshi-font md:grid-cols-2 lg:grid-cols-2">
       {/* Image Container - visible on md screens and up */}
@@ -37,8 +44,17 @@ const ResetPassword = () => {
       </div>
 
       {/* Form Container */}
-      <div className="w-full  mx-auto">
-        <ResetYourPassword />
+      <div className="flex justify-center w-full xl:mr-40 md:mt-0 p-5 ">
+        <div className="res-forgot-input w-100">
+          <h1 className="text-3xl md:text-4xl font-semibold mb-2 manrope-font">
+            Password Reset
+          </h1>
+          <p className="text-[#697586] text-base mb-8">
+            Enter your new password.
+          </p>
+          {/* Login form */}
+          <PasswordReset otp={otp} />
+        </div>
       </div>
     </section>
   );

@@ -3,6 +3,7 @@ import SignUpForm from "../components/SignUpForm/SignUPForm";
 import LoginImageBase from "../assets/images/loginImage-base.png";
 import LoginImageFront from "../assets/images/loginImage-Front.png";
 import LoginImageLogo from "../assets/images/loginImage-logo.png";
+import { Suspense } from "react";
 
 const SignUp = () => {
   return (
@@ -37,12 +38,12 @@ const SignUp = () => {
           <h1 className="text-3xl md:text-3xl font-semibold mb-2 manrope-font">
             Create Your Account
           </h1>
-
           <p className="text-[#697586] text-sm md:text-base mb-6">
             Enter your details to start with CORESTOCK.
           </p>
-
-          <SignUpForm />
+          <Suspense fallback={<div>Loading signup...</div>}>
+            <SignUpForm />
+          </Suspense>{" "}
         </div>
       </div>
     </section>

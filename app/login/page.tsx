@@ -9,7 +9,7 @@ import LoginImageLogo from "../assets/images/loginImage-logo.png";
 
 const LoginPage = () => {
   return (
-    <section className="flex items-center max-w-480 satoshi-font">
+    <section className="flex items-center max-w-480 mx-auto satoshi-font">
       <div className="hidden md:flex items-center justify-left w-full  relative login-image-hide">
         {/* Logo at top-left */}
         <div className="absolute top-8 left-7 z-1">

@@ -1,7 +1,6 @@
 "use client";
 import Image from "next/image";
 import xCloser from "../../assets/images/x-close.png";
-import refresherIcon from "../../assets/images/refresh.png";
 import EmailNotification from "../../components/settingform/EmailNotification";
 import PushNotification from "../../components/settingform/PushNotification";
 import InAppAlert from "../../components/settingform/InAppAlert";

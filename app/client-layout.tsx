@@ -10,16 +10,16 @@ import React, {
 } from "react";
 import "react-toastify/dist/ReactToastify.css";
 import { usePathname } from "next/navigation";
-// import store from "@/redux/store";
+import store from "@/redux/store";
 import PathChecker from "./utils/pathChecker";
 import { protectedRoutes } from "./utils/routes";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@mui/material/styles";
 import { ToastContainer } from "react-toastify";
 import { useLayout } from "./context/layoutContext";
-// import { fetchUserData } from "@/redux/actions/user-action/user-action";
-// import { Provider, useDispatch } from "react-redux";
-// import { AppDispatch } from "../redux/store";
+import { fetchUserData } from "@/redux/actions/user-action/user-action";
+import { Provider, useDispatch } from "react-redux";
+import { AppDispatch } from "../redux/store";
 
 /* ---------------- INTERFACES ---------------- */
 interface ClientLayoutProps {
@@ -32,27 +32,25 @@ const collapsedWidth = 60;
 
 /* ---------------- COMPONENT ---------------- */
 const ClientLayout = ({ children }: ClientLayoutProps) => {
-  //   const pathname = usePathname();
+  const pathname = usePathname();
   const [drawerOpen, setDrawerOpen] = useState(false);
   const { isLayoutVisible } = useLayout();
 
   // Component to initialize Redux-related dispatches
-  // const ReduxInitializer = () => {
-  // const dispatch: AppDispatch = useDispatch();
-  const pathname = usePathname();
+  const ReduxInitializer = () => {
+    const dispatch: AppDispatch = useDispatch();
+    const pathname = usePathname();
 
-  //     useEffect(() => {
-  //       const isProtected =
-  //         protectedRoutes.includes(pathname) ||
-  //         /^\/organization\/[^\/]+$/.test(pathname);
+    useEffect(() => {
+      const isProtected = protectedRoutes.includes(pathname);
 
-  //       if (isProtected) {
-  //         // Force fetch user data on page load to ensure fresh profile data
-  //         dispatch(fetchUserData(true));
-  //       }
-  //     }, [dispatch, pathname]);
-  //     return null; // This component doesn't render anything itself
-  //   };
+      if (isProtected) {
+        // Force fetch user data on page load to ensure fresh profile data
+        dispatch(fetchUserData());
+      }
+    }, [dispatch, pathname]);
+    return null; // This component doesn't render anything itself
+  };
 
   // ----- MEDIA QUERY FOR DESKTOP VIEW -----
   const theme = useTheme();
@@ -86,42 +84,40 @@ const ClientLayout = ({ children }: ClientLayoutProps) => {
           ? `${drawerWidth}px`
           : `${collapsedWidth}px`
         : undefined,
-      paddingTop: showSidebar ? "50px" : "0",
+      paddingTop: showSidebar ? "70px" : "0",
     }),
     [showSidebar, drawerOpen],
   );
 
   return (
-    // <Provider store={store}>
-    //   <ReduxInitializer /> {/* Render the initializer here */}
-    <>
-      {/* Toast Notification Container */}
-      <ToastContainer
-        position="top-right"
-        autoClose={3000}
-        hideProgressBar={false}
-        newestOnTop={true}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-      />
-
-      {/* PATH CHECKER (Handles Sidebar/Header Rendering) */}
-      {pathname && isLayoutVisible && (
-        <PathChecker
-          pathName={pathname}
-          open={drawerOpen}
-          setOpen={handleSetDrawerOpen}
+    <Provider store={store}>
+      <>
+        <ReduxInitializer /> {/* Render the initializer here */}
+        {/* Toast Notification Container */}
+        <ToastContainer
+          position="top-right"
+          autoClose={3000}
+          hideProgressBar={false}
+          newestOnTop={true}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
         />
-      )}
-      {/* MAIN CONTENT */}
-      <main style={mainStyle}>{children}</main>
-    </>
-    // </Provider>
+        {/* PATH CHECKER (Handles Sidebar/Header Rendering) */}
+        {pathname && isLayoutVisible && (
+          <PathChecker
+            pathName={pathname}
+            open={drawerOpen}
+            setOpen={handleSetDrawerOpen}
+          />
+        )}
+        {/* MAIN CONTENT */}
+        <main style={mainStyle}>{children}</main>
+      </>
+    </Provider>
   );
 };
-// };
 
 export default ClientLayout;

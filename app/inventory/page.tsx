@@ -7,7 +7,6 @@ import InventoryTableHeader from "@/app/components/inventory/inventoryTableHeade
 const Inventory = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState<string | null>(null);
-  const [expiryFilter, setExpiryFilter] = useState<string | null>(null);
   const [sortBy, setSortBy] = useState<string | null>(null);
   const [showExpiring30Days, setShowExpiring30Days] = useState(false);
   return (
@@ -22,7 +21,6 @@ const Inventory = () => {
           setSearchQuery={setSearchQuery}
           showSearch={true}
           setStatusFilter={setStatusFilter}
-          setExpiryFilter={setExpiryFilter}
           sortBy={sortBy}
           setSortBy={setSortBy}
           showExpiring30Days={showExpiring30Days}

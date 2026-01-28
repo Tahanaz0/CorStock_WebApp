@@ -1,7 +1,7 @@
 "use client";
 
 /* ---------------- IMPORTS ---------------- */
-import React, { useState, memo } from "react";
+import React, { useState, memo, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Group, TextInput, Avatar, Menu, Button } from "@mantine/core";
 import Image from "next/image";
@@ -22,6 +22,19 @@ import activityIcon from "../../assets/images/acivity.png";
 import shieldIcon from "../../assets/images/shield-.png";
 import buildingIcon from "../../assets/images/building.png";
 import SettingForm from "@/app/modals/settingform/settingForm";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../../../redux/store";
+import { logoutUserAction } from "@/redux/actions/auth-action/auth-action";
+import { fetchUserData } from "@/redux/actions/user-action/user-action";
+
+// Helper function to get initials from name
+const getInitials = (name: string) => {
+  return name
+    .split(" ")
+    .map((n) => n[0])
+    .join("")
+    .toUpperCase();
+};
 
 /* ---------------- INTERFACES ---------------- */
 interface HeaderProps {
@@ -30,7 +43,17 @@ interface HeaderProps {
 
 /* ---------------- COMPONENT ---------------- */
 const Header: React.FC<HeaderProps> = memo(({ sidebarOpen = false }) => {
+  const dispatch: AppDispatch = useDispatch();
   const router = useRouter();
+
+  const userData = useSelector((state: RootState) => state.user.userData);
+
+  useEffect(() => {
+    if (!userData) {
+      dispatch(fetchUserData());
+    }
+  }, [dispatch, userData]);
+
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const [isOpenSettingModal, setIsOpenSettingModal] = useState(false);
@@ -84,14 +107,16 @@ const Header: React.FC<HeaderProps> = memo(({ sidebarOpen = false }) => {
           <Menu.Target>
             <div className="relative">
               <Avatar
-                src={undefined}
+                src={userData?.profileImage}
                 alt="profile"
                 radius="xl"
                 className="cursor-pointer"
                 onClick={() => setIsDropdownOpen((o) => !o)}
                 color="#FF8A3D"
               >
-                {/* {!profile && getInitials(userName)} */}
+                {!userData?.profileImage &&
+                  userData?.name &&
+                  getInitials(userData.name)}
               </Avatar>
             </div>
           </Menu.Target>
@@ -99,10 +124,19 @@ const Header: React.FC<HeaderProps> = memo(({ sidebarOpen = false }) => {
           <Menu.Dropdown className="[&_.mantine-Menu-itemLabel]:text-[#697586] font-medium satoshi-font">
             {/* ---------------- USER INFO ---------------- */}
             <div className="flex items-center py-3">
-              <Avatar src={undefined} radius="xl" size="md" color="#FF8A3D" />
+              <Avatar
+                src={userData?.profileImage}
+                radius="xl"
+                size="md"
+                color="#FF8A3D"
+              />
               <div className="ml-3">
-                <div className="font-semibold text-sm">user</div>
-                <div className="text-xs text-gray-500">user email</div>
+                <div className="font-semibold text-sm">
+                  {userData?.name || "User"}
+                </div>
+                <div className="text-xs text-gray-500">
+                  {userData?.email || "user email"}
+                </div>
               </div>
             </div>
 
@@ -175,8 +209,8 @@ const Header: React.FC<HeaderProps> = memo(({ sidebarOpen = false }) => {
             <div className="border border-[#EEF2F6] my-2" />
 
             <Menu.Item
-              onClick={() => {
-                localStorage.removeItem("userData");
+              onClick={async () => {
+                await dispatch(logoutUserAction());
                 router.push("/login");
               }}
               leftSection={<Image src={signoutLogo} alt="signout" />}

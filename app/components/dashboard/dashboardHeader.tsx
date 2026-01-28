@@ -1,13 +1,13 @@
 "use client";
 
 import React from "react";
-// import { useSelector } from "react-redux";
-// import { RootState } from "@/redux/store";
+import { useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
 // import DashboardActionButtons from "./dashboardActionButtons";
 import styles from "./dashboardHeader.module.css";
 
 const DashboardHeader = () => {
-  //   const userData = useSelector((state: RootState) => state.user.userData);
+  const userData = useSelector((state: RootState) => state.user.userData);
 
   const formattedDate = new Date().toLocaleDateString("en-US", {
     weekday: "long",
@@ -15,8 +15,7 @@ const DashboardHeader = () => {
     day: "numeric",
   });
 
-  //   const userName = (userData?.name as string) || "User";
-  const userName = "Ali";
+  const userName = (userData?.name as string) || "User";
 
   return (
     <section className={styles.header}>

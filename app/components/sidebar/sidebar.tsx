@@ -20,6 +20,9 @@ import MenuIcon from "@mui/icons-material/Menu";
 import { Avatar } from "@mantine/core";
 import { Stack } from "@mui/material";
 import Image from "next/image";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../../../redux/store";
+import { logoutUserAction } from "@/redux/actions/auth-action/auth-action";
 
 import type { SideBarProps, SidebarItem } from "../../types/index";
 import {
@@ -85,6 +88,7 @@ const Drawer = styled(MuiDrawer, {
 
 /* ---------------- COMPONENT ---------------- */
 const SideBar = React.memo(({ open, setOpen }: SideBarProps) => {
+  const dispatch: AppDispatch = useDispatch();
   const router = useRouter();
   const pathname = usePathname();
 
@@ -216,7 +220,7 @@ const SideBar = React.memo(({ open, setOpen }: SideBarProps) => {
         <List sx={{ pb: 2 }}>
           <ListItem disablePadding>
             <ListItemButton
-              onClick={() => localStorage.removeItem("userData")}
+              onClick={() => dispatch(logoutUserAction())}
               href="/login"
               sx={{
                 minHeight: 48,

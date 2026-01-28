@@ -23,8 +23,8 @@ const data = [
 ];
 
 export default function StockMovementAreaChart() {
-  const handleChange = (value: string | null) => {
-    console.log("Selected value:", value);
+  const handleChange = () => {
+    // TODO: Handle time period selection
   };
 
   return (

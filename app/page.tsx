@@ -1,7 +1,4 @@
-"use client";
-
-import React, { useEffect } from "react";
-import { useRouter } from "next/navigation";
+import React from "react";
 
 import DashboardCards from "./components/dashboard/dashboardCards";
 import DashboardHeader from "./components/dashboard/dashboardHeader";
@@ -13,16 +10,6 @@ import CategoryBreakdownPie from "./components/charts/CategoryBreakdownPie";
 import RecentActivity from "./components/dashboard/RecentActivity";
 
 const Page = () => {
-  const router = useRouter();
-
-  useEffect(() => {
-    const userData = localStorage.getItem("userData");
-
-    if (!userData) {
-      router.replace("/login");
-    }
-  }, [router]);
-
   return (
     <div className="bg-[#F4F3F3] page-container flex flex-col gap-5">
       {/* HEADER */}

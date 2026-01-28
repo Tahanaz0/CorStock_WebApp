@@ -105,3 +105,101 @@ body {
   align-items: flex-start;
   z-index: 10;
 }
+
+/* form image responsive css */
+
+@media only screen and (min-width: 1400px) {
+  .res-width {
+    width: 600px;
+  }
+
+  .res-logo {
+    width: 150px;
+  }
+
+  .res-front-width {
+    width: 450px;
+    height: 500px;
+  }
+
+  .res-front-left {
+    left: 75px;
+    bottom: 25px;
+  }
+}
+
+@media only screen and (min-width: 1600px) {
+  .res-width {
+    width: 700px;
+  }
+
+  .res-logo {
+    width: 180px;
+  }
+
+  .res-front-width {
+    width: 500px;
+    height: 550px;
+  }
+
+  .res-front-left {
+    left: 100px;
+    bottom: 28px;
+  }
+}
+
+@media only screen and (min-width: 1750px) {
+  .res-width {
+    width: 750px;
+  }
+
+  .res-front-width {
+    width: 560px;
+    height: 550px;
+  }
+
+  .res-front-left {
+    left: 95px;
+    bottom: 30px;
+  }
+}
+
+@media only screen and (min-width: 1820px) {
+  .res-width {
+    width: 900px;
+  }
+
+  .res-front-width {
+    width: 500px;
+    height: 650px;
+  }
+
+  .res-front-left {
+    left: 177px;
+    bottom: 35px;
+  }
+
+  .reset-img-res {
+    width: 852px;
+  }
+}
+
+/* responsive forgot password inputs */
+
+@media only screen and (max-width: 440px) {
+  .res-forgot-input {
+    width: 350px;
+  }
+}
+
+@media only screen and (max-width: 400px) {
+  .res-forgot-input {
+    width: 300px;
+  }
+}
+
+@media only screen and (max-width: 340px) {
+  .res-forgot-input {
+    width: 270px;
+  }
+}

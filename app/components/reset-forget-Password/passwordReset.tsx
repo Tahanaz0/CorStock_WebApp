@@ -1,20 +1,34 @@
-// Note: This is Reset Your password component with password inputs...!
-
 "use client";
 
 import React, { useState } from "react";
 import { z } from "zod";
-import { Button, SimpleGrid, PasswordInput } from "@mantine/core";
+import { Button, Stack, PasswordInput } from "@mantine/core";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
+import { AppDispatch } from "@/redux/store";
+import { useDispatch, useSelector } from "react-redux";
+import { resetPassword } from "@/redux/actions/auth-action/auth-action";
+import { RootState } from "../../../redux/store";
 
-const PasswordReset = () => {
+interface resetPasswordDataType {
+  email: string;
+  otp: string;
+  newPassword: string;
+}
+
+const PasswordReset = ({ otp }: { otp: string }) => {
   const [values, setValues] = useState({
     newPassword: "",
     confirmPassword: "",
   });
 
+  const getEmailRedux: string | null = useSelector(
+    (state: RootState) => state.auth.requestPassEmail,
+  );
+  const loading = useSelector((state: RootState) => state.auth.loading);
+
   const router = useRouter();
+  const dispatch: AppDispatch = useDispatch();
 
   const passwordSchema = z
     .object({
@@ -28,7 +42,7 @@ const PasswordReset = () => {
       path: ["confirmPassword"],
     });
 
-  const handlePassword = () => {
+  const handlePassword = async () => {
     const parsed = passwordSchema.safeParse({
       newPassword: values.newPassword,
       confirmPassword: values.confirmPassword,
@@ -41,9 +55,22 @@ const PasswordReset = () => {
       else if (error.confirmPassword) toast.error(error.confirmPassword[0]);
       return;
     }
+    const resetPasswordData: resetPasswordDataType = {
+      email: `${getEmailRedux}`,
+      otp: `${otp}`,
+      newPassword: parsed.data.confirmPassword,
+    };
 
-    toast.success("Password updated successfully!");
-    setTimeout(() => router.push("/"), 1500);
+    try {
+      await dispatch(resetPassword(resetPasswordData));
+      toast.success("Password reset link sent to your email!");
+      setTimeout(() => {
+        router.push("/login");
+      }, 1000);
+    } catch (error) {
+      console.log(error);
+      toast.error("Something Went Wrong to sent OTP");
+    }
   };
 
   const handleChange = (field: keyof typeof values, value: string) => {
@@ -51,52 +78,48 @@ const PasswordReset = () => {
   };
 
   return (
-    <div className="w-full max-w-lg mx-auto px-4 mt-40 md:mt-0 satoshi-font">
-      {/* Heading */}
-      <div className="mb-8 text-left">
-        <h1 className="text-3xl md:text-4xl font-semibold mb-2 manrope-font">
-          Password Reset
-        </h1>
-        <p className="text-[#697586] text-base">Enter your new password.</p>
-      </div>
-
+    <div className="w-full satoshi-font">
       {/* Password input form */}
-      <div className="space-y-4">
-        <SimpleGrid cols={{ sm: 1 }} spacing="md">
-          <PasswordInput
-            label="New Password"
-            placeholder="Enter Password"
-            autoFocus
-            value={values.newPassword}
-            onChange={(e) => handleChange("newPassword", e.target.value)}
-            styles={{ label: { color: "#364152" } }}
-          />
+      <Stack gap="md">
+        <PasswordInput
+          label="New Password"
+          placeholder="Enter Password"
+          autoFocus
+          value={values.newPassword}
+          onChange={(e) => handleChange("newPassword", e.target.value)}
+          styles={{
+            label: { color: "#364152", fontWeight: "500" },
+          }}
+          size="sm"
+        />
 
-          <PasswordInput
-            label="Confirm Password"
-            placeholder="Enter Password"
-            value={values.confirmPassword}
-            onChange={(e) => handleChange("confirmPassword", e.target.value)}
-            styles={{ label: { color: "#364152" } }}
-          />
-        </SimpleGrid>
+        <PasswordInput
+          label="Confirm Password"
+          placeholder="Enter Password"
+          value={values.confirmPassword}
+          onChange={(e) => handleChange("confirmPassword", e.target.value)}
+          styles={{
+            label: { color: "#364152", fontWeight: "500" },
+          }}
+          size="sm"
+        />
 
         <Button
           onClick={handlePassword}
-          // loading={loading}
-          // disabled={loading}
           fullWidth
+          size="sm"
+          loading={loading}
+          disabled={loading}
           style={{
             backgroundColor: "#FF8A3D",
             color: "black",
             borderRadius: "8px",
           }}
-          className="text-orange-400 font-medium manrope-font"
+          className="text-orange-400 font-medium manrope-font responsive-button"
         >
           Update
-          {/* {loading ? "Logging in..." : "Login"} */}
         </Button>
-      </div>
+      </Stack>
     </div>
   );
 };

@@ -1,6 +1,6 @@
-
 "use client";
 
+import React, { useEffect, useState } from "react";
 import {
   Stack,
   TextInput,
@@ -15,6 +15,13 @@ import Link from "next/link";
 import { z } from "zod";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
+import { AppDispatch } from "@/redux/store";
+import { useDispatch } from "react-redux";
+import {
+  signupWithToken,
+  verifyInvitation,
+} from "@/redux/actions/auth-action/auth-action";
+import { useSearchParams } from "next/navigation";
 
 // --------------------------
 // Zod schema + Type
@@ -36,13 +43,21 @@ export type SignUpFormValues = z.infer<typeof signupSchema>;
 // SignUpForm Component
 // --------------------------
 const SignUpForm = () => {
+  const dispatch: AppDispatch = useDispatch();
+  const searchParams = useSearchParams();
   const router = useRouter();
+
+  const token = searchParams.get("token");
+  const emailFromParams = searchParams.get("email");
+
+  const [loading, setLoading] = useState(false);
+  const [verifying, setVerifying] = useState(true);
 
   const form = useForm<SignUpFormValues>({
     initialValues: {
       firstName: "",
       lastName: "",
-      email: "",
+      email: emailFromParams || "",
       password: "",
       companyName: "",
       agree: false,
@@ -80,14 +95,67 @@ const SignUpForm = () => {
     },
   });
 
-  const handleSubmit = (values: SignUpFormValues) => {
-    console.log("Signup Values:", values);
-    toast.success("Account Created Successfully");
-    // TODO: API call for signup can go here
-    setTimeout(() => {
-      router.push("/login");
-    }, 1500);
+  // Verify invitation on component mount
+  useEffect(() => {
+    const verifyToken = async () => {
+      setVerifying(true);
+      try {
+        if (!token) {
+          toast.error("Invalid invitation link");
+          return;
+        }
+
+        const res = await dispatch(verifyInvitation(token));
+        if (res) toast.success("Invitation verified successfully");
+      } catch (err) {
+        const errorMessage =
+          err instanceof Error ? err.message : "Invitation verification failed";
+        toast.error(errorMessage);
+        console.error(err);
+      } finally {
+        setVerifying(false);
+      }
+    };
+
+    verifyToken();
+  }, [token, dispatch]);
+
+  const handleSubmit = async (values: SignUpFormValues) => {
+    if (!token) {
+      toast.error("Invalid token. Please try again.");
+      return;
+    }
+
+    setLoading(true);
+
+    const userData = {
+      token: token,
+      email: values.email,
+      name: `${values.firstName} ${values.lastName}`,
+      role: "admin",
+      password: values.password,
+    };
+
+    try {
+      const result = await dispatch(signupWithToken(userData));
+      if (result) toast.success("Signup Successfully");
+      setTimeout(() => {
+        router.push("/login");
+      }, 1000);
+    } catch (error: unknown) {
+      const message =
+        error instanceof Error
+          ? error.message
+          : "Signup failed. Please try again.";
+      toast.error(message);
+    } finally {
+      setLoading(false);
+    }
   };
+
+  if (verifying) {
+    return <div>Verifying invitation...</div>;
+  }
 
   return (
     <form onSubmit={form.onSubmit(handleSubmit)}>
@@ -122,6 +190,7 @@ const SignUpForm = () => {
           label="Email"
           placeholder="Enter email address"
           type="email"
+          disabled
           {...form.getInputProps("email")}
           styles={{ input: { height: 42 } }}
         />
@@ -193,6 +262,8 @@ const SignUpForm = () => {
           c="black"
           bdrs="8px"
           className="manrope-font"
+          loading={loading}
+          disabled={loading || verifying}
         >
           Sign Up
         </Button>

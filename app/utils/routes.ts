@@ -3,7 +3,13 @@
 /**
  * Public routes accessible without authentication
  */
-const publicRoutes = ["/signup", "/login"];
+const publicRoutes = [
+  "/signup",
+  "/login",
+  "/resetPassword",
+  "/verifyemail",
+  "/forgotPassword",
+];
 
 /**
  * Protected routes requiring authentication

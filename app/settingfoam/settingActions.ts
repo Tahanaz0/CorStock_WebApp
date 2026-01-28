@@ -1,7 +1,6 @@
-'use server';
+"use server";
 
-import { settingsSchema, SettingsSchemaType } from './settingSchema';
-
+import { settingsSchema } from "./settingSchema";
 
 export async function saveSettings(data: unknown) {
   const parsed = settingsSchema.safeParse(data);
@@ -12,5 +11,4 @@ export async function saveSettings(data: unknown) {
   }
 
   console.log("✅ SETTINGS DATA (SERVER):", parsed.data);
-
 }
