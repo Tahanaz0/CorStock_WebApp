@@ -12,6 +12,24 @@ const Labels = () => {
   ]);
   const [customText, setCustomText] = useState("Bosch — Warehouse A - Shelf B");
   const [qrOnly, setQrOnly] = useState(true);
+  const [openPreview, setOpenPreview] = useState(false);
+  const [showBulkContainer, setShowBulkContainer] = useState(false);
+  const [openDownload, setOpenDownload] = useState(false);
+  const [activeTab, setActiveTab] = useState<"item" | "zone" | "site">("item");
+  const itemFields = [
+    "Item Code (SKU)",
+    "Category",
+    "Site",
+    "Zone / Bin",
+    "QR Code",
+    "Last Received Date",
+  ];
+
+  const zoneFields = [
+    "Display Zone Name",
+    "Display Zone ID",
+    "Display Site Name",
+  ];
 
   return (
     <div className="bg-[#F4F3F3] min-h-screen p-6 font-sans">
@@ -39,13 +57,39 @@ const Labels = () => {
       {/* Tabs */}
       <div className="bg-white rounded-lg p-2">
         <div className="flex gap-2 border m-2 p-1 bg-gray-50 border-gray-200 rounded-lg">
-          <button className="px-3  p-2 rounded-lg text-sm text-[#697586] font-medium transition-all duration-300 hover:bg-[#FF8A3D]  hover:text-black">
+          <button
+            onClick={() => setActiveTab("item")}
+            className={`px-3 p-2 rounded-lg text-sm font-medium transition-all
+      ${
+        activeTab === "item"
+          ? "bg-[#FF8A3D] text-black"
+          : "text-[#697586] hover:bg-[#FF8A3D] hover:text-black"
+      }`}
+          >
             Item Label
           </button>
-          <button className="px-3 p-2 rounded-lg text-sm text-[#697586] font-medium transition-all duration-300 hover:bg-[#FF8A3D] hover:text-black">
+
+          <button
+            onClick={() => setActiveTab("zone")}
+            className={`px-3 p-2 rounded-lg text-sm font-medium transition-all
+      ${
+        activeTab === "zone"
+          ? "bg-[#FF8A3D] text-black"
+          : "text-[#697586] hover:bg-[#FF8A3D] hover:text-black"
+      }`}
+          >
             Zone Label
           </button>
-          <button className="px-3 p-2 rounded-lg text-sm text-[#697586] font-medium transition-all duration-300 hover:bg-[#FF8A3D] hover:text-black">
+
+          <button
+            onClick={() => setActiveTab("site")}
+            className={`px-3 p-2 rounded-lg text-sm font-medium transition-all
+      ${
+        activeTab === "site"
+          ? "bg-[#FF8A3D] text-black"
+          : "text-[#697586] hover:bg-[#FF8A3D] hover:text-black"
+      }`}
+          >
             Site Label
           </button>
         </div>
@@ -56,83 +100,130 @@ const Labels = () => {
             <h3 className="font-semibold">Label Configuration</h3>
 
             {/* Select Items */}
-            <div>
-              <label className="block text-sm font-medium mb-1">
-                Select Item(s)
-              </label>
-              <div className="relative w-full">
-                {/* Left Search Icon */}
-                <FiSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+            {/* ITEM TAB */}
+            {activeTab === "item" && (
+              <div>
+                <label className="block text-sm font-medium mb-1">
+                  Select Item(s)
+                </label>
 
-                {/* Right Dropdown Icon */}
-                <FiChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400" />
+                <div className="relative w-full">
+                  <FiSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+                  <FiChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400" />
 
-                {/* Input */}
-                <input
-                  type="text"
-                  placeholder="Search..."
-                  className="w-full border border-gray-300 rounded-lg py-2 pl-10 pr-10 text-sm focus:outline-none focus:ring-1 focus:ring-orange-400"
-                />
+                  <input
+                    type="text"
+                    placeholder="Search items..."
+                    className="w-full border border-gray-300 rounded-lg py-2 pl-10 pr-10 text-sm focus:outline-none focus:ring-1 focus:ring-orange-400"
+                  />
+                </div>
+
+                <div className="flex gap-2 mt-5 flex-wrap">
+                  {selectedItems.map((item) => (
+                    <span
+                      key={item}
+                      className="bg-gray-200 px-2 py-1 rounded-full text-sm text-gray-700 flex items-center gap-2 cursor-pointer"
+                    >
+                      {item} ✕
+                    </span>
+                  ))}
+                </div>
               </div>
+            )}
 
-              <div className="flex gap-2 mt-5 flex-wrap ">
-                {selectedItems.map((item) => (
-                  <span
-                    key={item}
-                    className="bg-gray-200 px-2 py-1 rounded-full text-sm  bg-[Gray/100] text-gray-700 flex items-center gap-2 cursor-pointer"
-                  >
-                    {item} ✕
-                  </span>
-                ))}
+            {/* ZONE TAB */}
+            {activeTab === "zone" && (
+              <div>
+                {/* 2 Inputs in same place */}
+                <div className="grid gap-3">
+                  {/* Site Input */}
+                  <p>Site</p>
+                  <div className="relative">
+                    <input
+                      type="text"
+                      placeholder="Warehouse A - Shelf B"
+                      className="w-full border border-gray-300 rounded-lg py-2 px-3 pr-10 text-sm focus:outline-none focus:ring-1 focus:ring-orange-400"
+                    />
+                    <FiChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
+                  </div>
+
+                  {/* Zone Input */}
+                  <p>Zone</p>
+                  <div className="relative">
+                    <input
+                      type="text"
+                      placeholder="M-12 Mechanical"
+                      className="w-full border border-gray-300 rounded-lg py-2 px-3 pr-10 text-sm focus:outline-none focus:ring-1 focus:ring-orange-400"
+                    />
+                    <FiChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
+                  </div>
+                </div>
               </div>
-            </div>
+            )}
+            {activeTab === "site" && (
+              <div>
+                {/* 2 Inputs in same place */}
+                <div className="grid gap-3">
+                  {/* Zone Name */}
+                  <p>Site</p>
+                  <div className="relative">
+                    <input
+                      type="text"
+                      placeholder="Warehouse A - Shelf B"
+                      className="w-full border border-gray-300 rounded-lg py-2 px-3 text-sm focus:outline-none focus:ring-1 focus:ring-orange-400"
+                    />
+                    <FiChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
+                  </div>
 
+                  {/* Zone Code */}
+                  {/* <p>Zone</p>
+                  <input
+                    type="text"
+                    placeholder="M-12 Mechanical"
+                    className="w-full border border-gray-300 rounded-lg py-2 px-3 text-sm focus:outline-none focus:ring-1 focus:ring-orange-400"
+                  /> */}
+                </div>
+              </div>
+            )}
             {/* Include Fields */}
             <div>
               <label className="block text-sm font-medium mb-1">
                 Include Fields on Label
               </label>
-              <div className="grid grid-cols-2 gap-2 text-sm">
-                {[
-                  "Item Code (SKU)",
-                  "Category",
-                  "Site",
-                  "Zone / Bin",
-                  "QR Code",
-                  "Last Received Date",
-                ].map((field) => (
-                  <label
-                    key={field}
-                    className="flex items-center gap-2 cursor-pointer relative"
-                  >
-                    {/* real checkbox */}
-                    <input
-                      type="checkbox"
-                      defaultChecked
-                      className="peer absolute w-4 h-4 opacity-0 cursor-pointer"
-                    />
 
-                    {/* custom checkbox */}
-                    <span
-                      className=" w-4 h-4 border-[1px] border-[#EF4B07] rounded-sm flex items-center justify-center bg-[#FFF5F0]
-    "
+              <div className="grid grid-cols-3 gap-2 text-sm">
+                {(activeTab === "item" ? itemFields : zoneFields).map(
+                  (field) => (
+                    <label
+                      key={field}
+                      className="flex items-center text-[#697586] gap-2 cursor-pointer relative"
                     >
-                      <svg
-                        className="w-5 h-5 text-[#EF4B07]  peer-checked:block"
-                        viewBox="0 0 20 20"
-                        fill="currentColor"
-                      >
-                        <path
-                          fillRule="evenodd"
-                          d="M16.707 5.293a1 1 0 010 1.414L8.414 15l-4.121-4.121a1 1 0 011.414-1.414L8.414 12.586l6.879-6.879a1 1 0 011.414 0z"
-                          clipRule="evenodd"
-                        />
-                      </svg>
-                    </span>
+                      {/* real checkbox */}
+                      <input
+                        type="checkbox"
+                        defaultChecked
+                        className="peer absolute w-4 h-4 opacity-0 cursor-pointer"
+                      />
 
-                    <span className="select-none">{field}</span>
-                  </label>
-                ))}
+                      {/* custom checkbox — SAME AS YOUR UI */}
+                      <span className=" w-4 h-4 border-[1px] border-[#EF4B07] rounded-sm flex items-center justify-center bg-[#FFF5F0]">
+                        <svg
+                          className="w-5 h-5 text-[#EF4B07] peer-checked:block"
+                          viewBox="0 0 20 20"
+                          fill="currentColor"
+                        >
+                          <path
+                            fillRule="evenodd"
+                            d="M16.707 5.293a1 1 0 010 1.414L8.414 15l-4.121-4.121a1 1 0 011.414-1.414L8.414 12.586l6.879-6.879a1 1 0 011.414 0z"
+                            clipRule="evenodd"
+                          />
+                        </svg>
+                      </span>
+
+                      <span className="select-none">{field}</span>
+                    </label>
+                  ),
+                )}
               </div>
             </div>
 
@@ -158,6 +249,29 @@ const Labels = () => {
                 </select>
               </div>
             </div>
+            {activeTab === "site" && (
+              <div className=" gap-4">
+                <div className="flex-1">
+                  <label className="block text-sm font-medium mb-1">
+                    Label Size
+                  </label>
+                  <select className="w-full border border-[#E6E6E9] rounded px-2 py-1 text-[#697586]">
+                    <option>70mm x 35mm</option>
+                    <option>50mm x 25mm</option>
+                  </select>
+                </div>
+                <div className="flex-1">
+                  <label className="block text-sm font-medium mb-1">
+                    Font Size
+                  </label>
+                  <select className="w-full border border-[#E6E6E9] rounded px-2 py-1 text-[#697586]">
+                    <option>12px</option>
+                    <option>10px</option>
+                    <option>14px</option>
+                  </select>
+                </div>
+              </div>
+            )}
 
             {/* Custom Text */}
             <div>
@@ -214,9 +328,56 @@ const Labels = () => {
               </div>
             </div>
 
-            <div className="border border-[#E6E6E9] p-6 bg-[#F8FAFC] w-70  h-70 rounded-lg flex items-center justify-center">
-              <div className="w-42 h-42 bg-black"></div>
+            <div
+              onClick={() => setOpenPreview(true)}
+              className="border border-[#E6E6E9] p-6 bg-[#F8FAFC] w-70 h-70 rounded-lg 
+             flex items-center justify-center cursor-pointer hover:shadow-md transition"
+            >
+              <div className="w-45 h-42">
+                <img
+                  src="/scanner.png"
+                  alt="label preview"
+                  className="w-full h-full object-cover rounded-lg"
+                />
+              </div>
             </div>
+            {openPreview && (
+              <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
+                <div className="bg-white rounded-lg p-2 w-[460px] h-[450px] relative">
+                  {/* Close button */}
+                  <p>Preview</p>
+                  <button
+                    onClick={() => setOpenPreview(false)}
+                    className="absolute top-3 right-3 text-gray-400 hover:text-black"
+                  >
+                    ✕
+                  </button>
+                  <div className="bg-[#F8FAFC] mt-5 p-6 rounded-lg">
+                    <p className="text-center  mb-4">ITEM-ID: 000182</p>
+
+                    <div className="flex justify-center mb-4">
+                      <img
+                        src="/scanner.png" // ← yahan tumhara QR image
+                        alt="QR Code"
+                        className="w-50 h-50"
+                      />
+                    </div>
+
+                    <p className="text-center font-semibold">Bearing 6204 ZZ</p>
+                    <p className="text-center text-xs text-gray-500 mt-1">
+                      SKU: BR-6204-ZZ
+                    </p>
+                    <p className="text-center text-xs text-gray-500 mt-1">
+                      Site: Warehouse A - Shelf B
+                    </p>
+                    <p className="text-center text-xs text-gray-500 mt-1">
+                      Zone: M-12
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )}
+
             <div className="text-center">
               <p className="font-semibold">Heavy Duty Widget</p>
               <p className="text-gray-500 text-sm">SKU: ITEM-00123</p>
@@ -229,17 +390,81 @@ const Labels = () => {
         </div>
 
         {/* Bulk Label Generation */}
-        <div className="border  mt-6 border-[#E6E6E9] rounded-lg p-4 bg-[#FCFCD]">
-          <h3 className="font-semibold mb-4">Bulk Label Generation</h3> 
+        {!showBulkContainer && (
           <div className="flex gap-4 mt-6">
-            <button className="flex-1 border border-gray-300 bg-[#EEF2F6] p-4 rounded-lg text-sm hover:bg-[#FCFCFD]">
+            <button
+              onClick={() => setShowBulkContainer(true)}
+              className="flex-1 border border-gray-300 bg-[#EEF2F6] p-4 rounded-lg text-sm hover:bg-[#FCFCFD]"
+            >
               Select All Items in Zone
             </button>
-            <button className="flex-1 border border-gray-300 bg-[#EEF2F6]  p-4 rounded-lg text-sm hover:bg-[#FCFCFD]">
+
+            <button
+              onClick={() => setShowBulkContainer(true)}
+              className="flex-1 border border-gray-300 bg-[#EEF2F6] p-4 rounded-lg text-sm hover:bg-[#FCFCFD]"
+            >
               Select All Items in Site
             </button>
           </div>
-        </div>
+        )}
+        {showBulkContainer && (
+          <div className="border mt-6 border-[#E6E6E9] rounded-lg p-4 bg-[#FCFCFD]">
+            <h3 className="font-semibold mb-4">Bulk Label Generation</h3>
+
+            {/* Yahan tumhara table / list */}
+            <div className="mt-4 flex items-center justify-between gap-4">
+              {/* Left: Generating + Progress */}
+              <div className=" items-center gap-3 ">
+                <p className="text-xs text-gray-500 whitespace-nowrap">
+                  Generating 5 labels...
+                </p>
+
+                <div className="flex item-center gap-2 mt-1">
+                  <div className=" flex-1 h-1.5 bg-gray-200 w-50 rounded-full overflow-hidden">
+                    <div
+                      className="h-full bg-[#FF8A3D] rounded-full transition-all duration-500"
+                      style={{ width: "50%" }}
+                    />
+                  </div>
+
+                  <p className="text-xs text-gray-400 w-8 text-right">60%</p>
+                </div>
+              </div>
+
+              {/* Right: Buttons */}
+              <div className="flex items-center gap-3">
+                <div className="relative">
+                  <button
+                    onClick={() => setOpenDownload(!openDownload)}
+                    className="border px-4 py-1.5 rounded-md text-xs flex items-center gap-2 hover:bg-gray-50"
+                  >
+                    <img src="download.png" alt="" />
+                    Download
+                  </button>
+
+                  {openDownload && (
+                    <div className="absolute right-0 mt-2 w-34 bg-white border border-gray-200 rounded-md shadow-lg z-50">
+                      <button className="w-full px-3 py-2 text-left text-xs hover:bg-gray-100">
+                        Download PNG
+                      </button>
+                      <button className="w-full px-3 py-2 text-left text-xs hover:bg-gray-100">
+                        Download PDF
+                      </button>
+                      <button className="w-full px-3 py-2 text-left text-xs hover:bg-gray-100">
+                        Download ZIP
+                      </button>
+                    </div>
+                  )}
+                </div>
+
+                <button className="bg-[#FF8A3D]  px-4 py-1.5 flex items-center gap-2 rounded-md text-xs">
+                  <img src="/print.png" alt="" className="w-4 h-4" />
+                  Print Now
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
