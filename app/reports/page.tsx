@@ -5,43 +5,178 @@ import { FiChevronDown } from "react-icons/fi";
 import { FiBox, FiShoppingCart, FiClock, FiCheckCircle } from "react-icons/fi";
 import { LuArrowDownRight } from "react-icons/lu";
 import DashboardCharts from "../chart/page";
+import FastVsSlowMover from "../fast-vs-slow-mover/page";
+import OnTimeDeliveryChart from "../OnTimeDeliveryChart/page";
+import SupplierScorecard from "../SupplierScorecard/page";
 
 const Reports = () => {
-  const [activeTab, setActiveTab] = React.useState("item");
-  const cardsData = [
-    {
-      title: "Total Items",
-      amount: "£1,264,550",
-      percent: "28.4%",
-      image: "/total-stock.png",
-      showButton: true,
-      buttonText: "All sites",
-    },
-    {
-      title: "Low Stock Items",
-      amount: "46",
-      percent: "12.1%",
-      image: "/low-stock.png",
-      showButton: false,
-      buttonText: "Updated 10:45 AM",
-    },
-    {
-      title: "Fast Movers",
-      amount: "12 Items",
-      percent: "9.6%",
-      image: "/fast-mover.png",
-      showButton: false,
-      buttonText: "Updated 10:45 AM",
-    },
-    {
-      title: "Dead Stock ",
-      amount: "45 Items",
-      percent: "18.2%",
-      image: "/dead-stock.png",
-      showButton: false,
-      buttonText: "Updated 10:45 AM",
-    },
-  ];
+  type TabKey = "inventory" | "movement" | "procurement" | "supplier" | "admin";
+
+  const [activeTab, setActiveTab] = React.useState<TabKey>("inventory");
+
+  type CardItem = {
+    title: string;
+    amount: string;
+    percent: string;
+    image: string;
+    buttonText: string;
+  };
+
+  const cardsByTab: Record<TabKey, CardItem[]> = {
+    inventory: [
+      {
+        title: "Total Items",
+        amount: "£1,264,550",
+        percent: "28.4%",
+        image: "/total-stock.png",
+        buttonText: "All sites",
+      },
+      {
+        title: "Low Stock Items",
+        amount: "46",
+        percent: "12.1%",
+        image: "/low-stock.png",
+        buttonText: "Updated 10:45 AM",
+      },
+      {
+        title: "Fast Movers",
+        amount: "12 Items",
+        percent: "9.6%",
+        image: "/fast-mover.png",
+        buttonText: "Updated 10:45 AM",
+      },
+      {
+        title: "Dead Stock",
+        amount: "45 Items",
+        percent: "18.2%",
+        image: "/dead-stock.png",
+        buttonText: "Updated 10:45 AM",
+      },
+    ],
+
+    movement: [
+      {
+        title: "Total Movements",
+        amount: "3,240",
+        percent: "6.2%",
+        image: "/total-stock.png",
+        buttonText: "All sites",
+      },
+      {
+        title: "Book-out percentage",
+        amount: "71%",
+        percent: "4.1%",
+        image: "/low-stock.png",
+        buttonText: "Updated 10:45 AM",
+      },
+      {
+        title: "Transfers between Sites",
+        amount: "320",
+        percent: "1.8%",
+        image: "/fast-mover.png",
+        buttonText: "Updated 10:45 AM",
+      },
+      {
+        title: "Adjustments Logged",
+        amount: "44",
+        percent: "0.9%",
+        image: "/dead-stock.png",
+        buttonText: "Updated 10:45 AM",
+      },
+    ],
+    procurement: [
+      {
+        title: "Open POs",
+        amount: "83",
+        percent: "28.4%",
+        image: "/total-stock.png",
+        buttonText: "Updated 10:45 AM",
+      },
+      {
+        title: "Overdue POs",
+        amount: "16",
+        percent: "28.4%",
+        image: "/low-stock.png",
+        buttonText: "Updated 10:45 AM",
+      },
+      {
+        title: "Spend",
+        amount: "£1.24M",
+        percent: "28.4%",
+        image: "/fast-mover.png",
+        buttonText: "Updated 10:45 AM",
+      },
+      {
+        title: "Average Lead Time",
+        amount: "8.5 days",
+        percent: "28.4%",
+        image: "/dead-stock.png",
+        buttonText: "Updated 10:45 AM",
+      },
+    ],
+ supplier:  [
+  {
+    title: "On-Time Delivery",
+    amount: "83%",
+    percent: "28.4%",
+    image: "/total-stock.png",
+    buttonText: "Updated 10:45 AM",
+  },
+  {
+    title: "Avg Delay",
+    amount: "3.1 days",
+    percent: "28.4%",
+    image: "/low-stock.png",
+    buttonText: "Updated 10:45 AM",
+  },
+  {
+    title: "Short Deliveries Logged",
+    amount: "32",
+    percent: "28.4%",
+    image: "/fast-mover.png",
+    buttonText: "Updated 10:45 AM",
+  },
+  {
+    title: "Return/Quality Issues",
+    amount: "16",
+    percent: "28.4%",
+    image: "/dead-stock.png",
+    buttonText: "Updated 10:45 AM",
+  },
+],
+    admin: [
+  {
+    title: "Stock Adjustments",
+    amount: "837",
+    percent: "28.4%",
+    image: "/total-stock.png",
+    buttonText: "Updated 10:45 AM",
+  },
+  {
+    title: "Over-deliveries",
+    amount: "46",
+    percent: "28.4%",
+    image: "/low-stock.png",
+    buttonText: "Updated 10:45 AM",
+  },
+  {
+    title: "Unmatched POs",
+    amount: "32",
+    percent: "28.4%",
+    image: "/fast-mover.png",
+    buttonText: "Updated 10:45 AM",
+  },
+  {
+    title: "Return/Quality Issues",
+    amount: "16",
+    percent: "28.4%",
+    image: "/dead-stock.png",
+    buttonText: "Updated 10:45 AM",
+  },
+]
+  };
+  const cardsData = cardsByTab[activeTab];
+
   return (
     <>
       <div className="bg-[#F4F3F3] min-h-screen p-3 font-sans">
@@ -75,91 +210,115 @@ const Reports = () => {
         <div className="bg-white rounded-lg p-2">
           <div className="flex gap-2 border m-2 p-1 bg-gray-50 border-gray-200 rounded-lg">
             <button
-              onClick={() => setActiveTab("item")}
+              onClick={() => setActiveTab("inventory")}
               className={`px-3 p-2 rounded-lg text-sm font-medium transition-all
            ${
-             activeTab === "item"
+             activeTab === "inventory"
                ? "bg-[#FF8A3D] text-black"
                : "text-[#697586] hover:bg-[#FF8A3D] hover:text-black"
            }`}
             >
-              Item Label
+              Inventory{" "}
             </button>
 
             <button
-              onClick={() => setActiveTab("zone")}
+              onClick={() => setActiveTab("movement")}
               className={`px-3 p-2 rounded-lg text-sm font-medium transition-all
            ${
-             activeTab === "zone"
+             activeTab === "movement"
                ? "bg-[#FF8A3D] text-black"
                : "text-[#697586] hover:bg-[#FF8A3D] hover:text-black"
            }`}
             >
-              Zone Label
+              Movements & Usage{" "}
             </button>
 
             <button
-              onClick={() => setActiveTab("site")}
+              onClick={() => setActiveTab("procurement")}
               className={`px-3 p-2 rounded-lg text-sm font-medium transition-all
          ${
-           activeTab === "site"
+           activeTab === "procurement"
              ? "bg-[#FF8A3D] text-black"
              : "text-[#697586] hover:bg-[#FF8A3D] hover:text-black"
          }`}
             >
-              Site Label
+              Procurement & POs{" "}
+            </button>
+            <button
+              onClick={() => setActiveTab("supplier")}
+              className={`px-3 p-2 rounded-lg text-sm font-medium transition-all
+         ${
+           activeTab === "supplier"
+             ? "bg-[#FF8A3D] text-black"
+             : "text-[#697586] hover:bg-[#FF8A3D] hover:text-black"
+         }`}
+            >
+              Supplier Performance{" "}
+            </button>
+            <button
+              onClick={() => setActiveTab("admin")}
+              className={`px-3 p-2 rounded-lg text-sm font-medium transition-all
+         ${
+           activeTab === "admin"
+             ? "bg-[#FF8A3D] text-black"
+             : "text-[#697586] hover:bg-[#FF8A3D] hover:text-black"
+         }`}
+            >
+              Audit & Admin{" "}
             </button>
           </div>
-          <div className="flex gap-6 border-t p-4  border-[#E6E6E9] -mx-2  ">
+          {/* INVENTORY TAB CONTENT */}
+          {/* CARDS */}
+          <div className="flex gap-6 border-t p-4 border-[#E6E6E9] -mx-2">
             <div className="flex gap-4 flex-wrap">
-              {cardsData.map((item, index) => (
+              {cardsData?.map((item, index) => (
                 <div
                   key={index}
-                  className="w-[225px] border border-[#EEF2F6] p-3 rounded-lg" 
+                  className="w-[225px] border border-[#EEF2F6] p-3 rounded-lg"
                 >
-                  {/* Top */}
                   <div className="flex justify-between items-center mb-2">
                     <div className="text-sm text-gray-500">{item.title}</div>
-                    <img
-                      src={item.image}
-                      alt={item.title}
-                      className="w-7  object-contain"
-                    />
+                    <img src={item.image} className="w-7" />
                   </div>
 
-                  {/* Amount */}
-                  <div className="font-[Manrope] font-bold">{item.amount}</div>
+                  <div className="font-bold">{item.amount}</div>
 
-                  {/* Bottom */}
-                  <div className="flex justify-between items-center  mt-4 border-t pt-3 border-[#E6E6E9] -mx-2">
-                    {index === 0 ? (
-                      // ✅ ONLY first card → button
-                      <button className="relative border border-[#E6E6E9] rounded-lg px-3 pr-8 text-sm flex items-center">
+                  <div className="flex justify-between items-center mt-4 border-t pt-3 border-[#E6E6E9] -mx-2">
+                    {activeTab === "inventory" && index === 0 ? (
+                      <button className="relative border border-[#E6E6E9] rounded-lg px-3 pr-8 text-sm">
                         {item.buttonText}
                         <FiChevronDown className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400" />
                       </button>
                     ) : (
-                      // ✅ Baqi sab → simple text
-
                       <span className="text-sm text-gray-500">
-                        {" "}
-                        {item.buttonText}{" "}
+                        {item.buttonText}
                       </span>
                     )}
 
-                    <span className="flex justify-center item-center gap-1 text-sm text-[#EC4F47]">
-                      <div>{item.percent}</div>
-                      <div>
-                        <LuArrowDownRight />
-                      </div>
+                    <span className="flex gap-1 text-sm text-[#EC4F47]">
+                      {item.percent}
+                      <LuArrowDownRight />
                     </span>
                   </div>
                 </div>
               ))}
             </div>
           </div>
+          {activeTab === "inventory" && (
+            <>
+              <DashboardCharts />
+              <FastVsSlowMover />
+            </>
+          )}
+          {activeTab === "movement" && (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <OnTimeDeliveryChart />
+              <SupplierScorecard />
+            </div>
+          )}
 
-          <DashboardCharts  />
+          {/* <DashboardCharts />
+          <FastVsSlowMover /> */}
         </div>
       </div>
     </>

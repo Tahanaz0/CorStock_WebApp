@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { FiChevronDown } from "react-icons/fi";
 import {
   BarChart,
   Bar,
@@ -10,24 +11,25 @@ import {
   ResponsiveContainer,
   PieChart,
   Pie,
+  CartesianGrid,
 } from "recharts";
 
 /* -------------------- DATA -------------------- */
-
 const barData = [
-  { name: "Warehouse A", value: 65000, color: "#6366f1" },
-  { name: "Warehouse B", value: 90000, color: "#22c55e" },
-  { name: "Warehouse C", value: 60000, color: "#fb923c" },
-  { name: "Warehouse D", value: 72000, color: "#ef4444" },
-  { name: "Warehouse E", value: 50000, color: "#06b6d4" },
+  { name: "Warehouse A", value: 65000, display: "£65k", color: "#FF8A3D" },
+  { name: "Warehouse B", value: 90000, display: "£90k", color: "#16B364" },
+  { name: "Warehouse C", value: 60000, display: "£60k", color: "#EC4F47" },
+  { name: "Warehouse D", value: 72000, display: "£72k", color: "#5C59F7" },
+  { name: "Warehouse E", value: 50000, display: "£50k", color: "#697586" },
 ];
 
 const pieData = [
-  { name: "Mechanical", value: 38, color: "#fb923c" },
-  { name: "Electrical", value: 27, color: "#22c55e" },
-  { name: "PPE", value: 10, color: "#6366f1" },
-  { name: "Tools", value: 15, color: "#ef4444" },
-  { name: "Consumables", value: 10, color: "#6b7280" },
+  { name: "Electrical", value: 38, color: "#FF8A3D" },
+  { name: "PPE", value: 10, color: "#6b7280" },
+  { name: "Tools", value: 15, color: "#EC4F47" },
+  { name: "Consumables", value: 10, color: "#7C83FD" },
+
+  { name: "Mechanical", value: 27, color: "#16B364" },
 ];
 
 /* -------------------- CUSTOM TYPES -------------------- */
@@ -62,6 +64,7 @@ const CustomBar = ({ x, y, width, height, payload }: BarShapeProps) => {
 };
 
 // Custom Pie Slice
+// Custom Pie Slice with border
 const CustomPieSlice = ({
   cx,
   cy,
@@ -73,7 +76,12 @@ const CustomPieSlice = ({
 }: CustomPieSliceProps) => {
   const RADIAN = Math.PI / 180;
 
-  const polarToCartesian = (cx: number, cy: number, r: number, angle: number) => ({
+  const polarToCartesian = (
+    cx: number,
+    cy: number,
+    r: number,
+    angle: number,
+  ) => ({
     x: cx + r * Math.cos(-angle * RADIAN),
     y: cy + r * Math.sin(-angle * RADIAN),
   });
@@ -93,7 +101,14 @@ const CustomPieSlice = ({
     Z
   `;
 
-  return <path d={d} fill={payload?.color || "#8884d8"} />;
+  return (
+    <path
+      d={d}
+      fill={payload?.color} // ✅ original slice color
+      stroke="#F8FAFC" // ✅ border color between slices
+      strokeWidth={2} // ✅ thickness
+    />
+  );
 };
 
 /* -------------------- COMPONENT -------------------- */
@@ -102,18 +117,47 @@ export default function DashboardCharts() {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
       {/* -------- BAR CHART -------- */}
-      <div className="bg-white rounded-xl p-4 shadow">
+      <div className="bg-white rounded-xl p-2 shadow">
         <div className="flex justify-between mb-4">
           <h2 className="font-semibold">Stock Value by Site</h2>
-          <span className="text-sm text-gray-400">This Week</span>
+          <button className="relative bg-[#F8FAFC]  rounded-lg px-2 pr-6  text-[#697586] flex items-center gap-2 text-sm">
+            This Week
+            <FiChevronDown className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400" />
+          </button>{" "}
         </div>
 
         <div className="h-[300px]">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={barData}>
-              <XAxis dataKey="name" />
-              <YAxis />
-              <Tooltip cursor={{ fill: "#f3f4f6" }} />
+              {/* dotted background grid */}
+              <CartesianGrid
+                strokeDasharray="3 3"
+                vertical={false} // sirf horizontal dotted lines
+              />
+
+              <XAxis
+                dataKey="name"
+                interval={0}
+                tickMargin={10}
+                tick={{ fontSize: 12, fill: "#6B7280" }}
+                tickLine={false}
+                axisLine={false}
+              />
+
+              {/* Y-axis line OFF */}
+              <YAxis
+                tickFormatter={(value) => `£${value / 1000}k`}
+                axisLine={false} // 👈 seedhi line band
+                tickLine={false} // 👈 choti ticks bhi band
+              />
+
+              <Tooltip
+                formatter={(value) =>
+                  typeof value === "number" ? `£${value / 1000}k` : ""
+                }
+                cursor={{ fill: "#f3f4f6" }}
+              />
+
               <Bar dataKey="value" shape={CustomBar} />
             </BarChart>
           </ResponsiveContainer>
@@ -124,17 +168,38 @@ export default function DashboardCharts() {
       <div className="bg-white rounded-xl p-4 shadow">
         <div className="flex justify-between mb-4">
           <h2 className="font-semibold">Category Distribution</h2>
-          <span className="text-sm text-gray-400">This Week</span>
+          <button className="relative bg-[#F8FAFC]  rounded-lg px-2 pr-6  text-[#697586] flex items-center gap-2 text-sm">
+            This Week
+            <FiChevronDown className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400" />
+          </button>{" "}
         </div>
 
-        <div className="flex justify-center">
-          <PieChart width={260} height={260}>
+        <div className="flex items-center gap-6">
+          {/* LEFT SIDE LIST */}
+          <div className="space-y-3">
+            {pieData.map((item) => (
+              <div key={item.name} className="flex items-center gap-3">
+                <span
+                  className="w-[6px] h-10 rounded"
+                  style={{ backgroundColor: item.color }}
+                />
+
+                <div className="text-sm text-gray-700">
+                  <div className="font-medium text-[#697586]">{item.name}</div>
+                  <div className="">{item.value}%</div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* DONUT CHART */}
+          <PieChart width={220} height={220}>
             <Pie
               data={pieData}
               dataKey="value"
               innerRadius={70}
               outerRadius={100}
-              shape={CustomPieSlice} // function reference, not JSX
+              shape={CustomPieSlice} // ✅ custom shape with borders
             />
             <Tooltip />
           </PieChart>
@@ -143,3 +208,4 @@ export default function DashboardCharts() {
     </div>
   );
 }
+
