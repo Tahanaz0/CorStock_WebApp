@@ -67,13 +67,17 @@ const ClientLayout = ({ children }: ClientLayoutProps) => {
   }, []);
 
   // ----- DETERMINE IF SIDEBAR SHOULD BE SHOWN (MEMOIZED) -----
-  const showSidebar = useMemo(() => {
-    if (!pathname || !isLayoutVisible) return false;
-    return (
-      protectedRoutes.includes(pathname) ||
-      /^\/organization\/[^\/]+$/.test(pathname) // Dynamic org routes
-    );
-  }, [pathname, isLayoutVisible]);
+ // app/layouts/clientLayout.tsx (Aapki file)
+const showSidebar = useMemo(() => {
+  if (!pathname || !isLayoutVisible) return false;
+  return (
+    protectedRoutes.includes(pathname) ||
+    /^\/organization\/[^\/]+$/.test(pathname) || // Org routes
+    /^\/add-user$/.test(pathname) || // ✅ Add user
+    /^\/manage/.test(pathname) || // ✅ All manage routes
+    /^\/user\//.test(pathname) // ✅ All user-related routes (agar aage aur bane)
+  );
+}, [pathname, isLayoutVisible])
 
   // ----- DYNAMIC STYLING FOR THE MAIN CONTENT (MEMOIZED) -----
   const mainStyle: React.CSSProperties = useMemo(

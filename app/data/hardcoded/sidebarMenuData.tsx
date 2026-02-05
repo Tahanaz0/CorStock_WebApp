@@ -49,6 +49,7 @@ export const mainMenuItems: SidebarMenuItemData[] = [
     icon: manageLogo,
     path: "/manage",
   },
+  
 ];
 
 export const logoutMenuItem: SidebarMenuItemData = {
