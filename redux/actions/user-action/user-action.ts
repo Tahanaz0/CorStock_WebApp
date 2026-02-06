@@ -12,6 +12,24 @@ import axios from "axios";
  * req, res pass karna zaruri hai taake server-side cookies read ho sake
  */
 export const fetchUserData = () => async (dispatch: AppDispatch) => {
+  // In development, avoid calling real /auth/me and just hydrate with a fake user
+  if (process.env.NODE_ENV === "development") {
+    dispatch(setUserLoading(true));
+    dispatch(setUserError(null));
+
+    dispatch(
+      setUserData({
+        id: "dev-user",
+        name: "Developer",
+        email: "dev@example.com",
+        role: "admin",
+      } as any),
+    );
+
+    dispatch(setUserLoading(false));
+    return;
+  }
+
   try {
     dispatch(setUserLoading(true));
     dispatch(setUserError(null));

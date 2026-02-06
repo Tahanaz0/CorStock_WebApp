@@ -45,6 +45,30 @@ interface SignupWithTokenData {
  */
 export const loginUserAction =
   (credentials: LoginCredentials) => async (dispatch: AppDispatch) => {
+    // In development, skip real backend and use a fake login so you can work without a valid API user
+    if (process.env.NODE_ENV === "development") {
+      const fakeResponse: AuthResponse = {
+        accessToken: "dev-token",
+        user: {
+          id: "dev-user",
+          name: "Developer",
+          email: credentials.email,
+          role: "admin",
+        },
+      };
+
+      setCookie("token", fakeResponse.accessToken || "", {
+        path: "/",
+      });
+
+      dispatch(setLoading(true));
+      dispatch(setError(null));
+      dispatch(loginUser(fakeResponse));
+      dispatch(setLoading(false));
+
+      return fakeResponse;
+    }
+
     try {
       dispatch(setLoading(true));
       dispatch(setError(null));
@@ -77,7 +101,9 @@ export const loginUserAction =
 
       dispatch(setError(message));
       dispatch(setLoading(false)); // Stop loading on error
-      throw error;
+
+      // Throw a clean Error so UI can show a user-friendly message
+      throw new Error(message);
     }
   };
 

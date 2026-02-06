@@ -11,6 +11,7 @@ import {
 import { SearchProvider } from "./context/searchContext";
 import { LayoutProvider } from "./context/layoutContext";
 import ClientLayout from "./client-layout";
+import { satoshi } from "./fonts";
 
 export const metadata: Metadata = {
   title: "Core Stock",
@@ -23,7 +24,7 @@ const RootLayout = ({
   children: ReactNode;
 }>) => {
   return (
-    <html lang="en" {...mantineHtmlProps}>
+    <html lang="en" {...mantineHtmlProps} className={`${satoshi.variable} font-sans`}>
       <head>
         <ColorSchemeScript />
       </head>
