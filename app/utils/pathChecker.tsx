@@ -16,11 +16,12 @@ interface PathCheckerProps {
 /* ---------------- COMPONENT ---------------- */
 const PathChecker = memo(({ pathName, open, setOpen }: PathCheckerProps) => {
   // ----- CHECK IF THE CURRENT PATH IS A PROTECTED ROUTE -----
-const show =
-  protectedRoutes.includes(pathName) ||
-  /^\/organization\/[^\/]+$/.test(pathName) ||
-  pathName.startsWith("/add-user") || // ✅ Yeh add karein
-  pathName === "/add-user"; // ✅ Ya fir yeh
+  const show =
+    protectedRoutes.includes(pathName) ||
+    /^\/organization\/[^\/]+$/.test(pathName) ||
+    /^\/add-(user|site|supplier|category|tag|template)$/.test(pathName) ||
+    /^\/manage/.test(pathName) ||
+    /^\/user\//.test(pathName);
 
   // ----- RENDER NOTHING IF THE ROUTE IS NOT PROTECTED -----
   if (!show) return null;

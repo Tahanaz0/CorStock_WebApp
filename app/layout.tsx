@@ -16,7 +16,11 @@ import { satoshi } from "./fonts";
 export const metadata: Metadata = {
   title: "Core Stock",
   description: "Core Stock by Blockwork IT",
+  icons: {
+    icon: "/favicon.ico", // ya "/favicon.png"
+  },
 };
+
 
 const RootLayout = ({
   children,

@@ -37,14 +37,6 @@ export type TemplateData = {
   type: string;
   updated: string;
 };
-export type AuditLogData = {
-  dateTime: string;
-  user: string;
-  changeType: string;
-  entity: string;
-  before: string;
-  after: string;
-};
 
 export const tabs: TabItem[] = [
   { id: "users", label: "Users" },
@@ -63,14 +55,6 @@ export const templatesStats: StatItem[] = [
   { title: "Inventory Templates", value: 3 },
   { title: "Supplier Templates", value: 2 },
   { title: "Label Templates", value: 3 },
-];
-
-// Audit Log Stats
-export const auditLogStats: StatItem[] = [
-  { title: "Total Audit Entries", value: 9 },
-  { title: "Entries This Week", value: 26 },
-  { title: "Unique Users Logged", value: 2 },
-  { title: "Errors Logged", value: 0 },
 ];
 
 export const statsData: Record<string, StatItem[]> = {
@@ -95,8 +79,7 @@ export const statsData: Record<string, StatItem[]> = {
     },
   ],
   templates: templatesStats,
-  audit: auditLogStats,
-};
+} as any; // Added after audit section below
 
 export const tagsStats: StatItem[] = [
   { title: "Total Tags", value: 24 },
@@ -104,7 +87,6 @@ export const tagsStats: StatItem[] = [
   { title: "Untagged Items", value: 32 },
 ];
 
-// ایک ہی بار declare کریں - updated version
 export const tableHeaders = {
   users: [
     "Name",
@@ -127,15 +109,6 @@ export const tableHeaders = {
   ],
   tags: ["Tag", "Colour", "Usage Count", "Action"],
   templates: ["File Name", "Type", "Last Updated", "Actions"],
-  audit: [
-    "Date & Time",
-    "User",
-    "Change Type",
-    "Entity",
-    "Before",
-    "After",
-    "Actions",
-  ],
 } as const;
 
 export const tableData = {
@@ -289,40 +262,6 @@ export const tableData = {
       updated: "23 Des 2023",
     },
   ] as TemplateData[],
-  audit: [
-    {
-      dateTime: "02 Des 2023, 19:00",
-      user: "Jane Cooper",
-      changeType: "Min Stock Change",
-      entity: "Bolt M10",
-      before: "3",
-      after: "3",
-    },
-    {
-      dateTime: "22 Des 2023, 11:40",
-      user: "Eleanor Pena",
-      changeType: "Status Change",
-      entity: "PPE Gloves Small",
-      before: "3",
-      after: "3",
-    },
-    {
-      dateTime: "23 Des 2023, 17:20",
-      user: "Jerome Bell",
-      changeType: "Stock Adjustment",
-      entity: "Grinding Disc",
-      before: "6",
-      after: "6",
-    },
-    {
-      dateTime: "30 Des 2023, 10:04",
-      user: "Brooklyn Simmons",
-      changeType: "Min Stock Change",
-      entity: "Bolt M10",
-      before: "9",
-      after: "9",
-    },
-  ] as AuditLogData[],
 };
 
 export const categoryStats: StatItem[] = [
@@ -344,4 +283,72 @@ export const categoriesData = [
     name: "Tools",
     sub: [],
   },
+];
+// manageData.ts میں نیچے existing code کے بعد یہ شامل کریں:
+
+// Audit Log Types
+export type AuditLogData = {
+  dateTime: string;
+  user: string;
+  changeType: string;
+  entity: string;
+  before: string;
+  after: string;
+};
+
+// Audit Log Stats
+export const auditLogStats: StatItem[] = [
+  { title: "Total Audit Entries", value: 9 ,icon: "/audits.png"},
+  { title: "Entries This Week", value: 26 , icon: "/entries.png"},
+  { title: "Unique Users Logged", value: 2, icon: "/unique.png" },
+
+];
+
+// Audit Log Table Data
+export const auditLogData: AuditLogData[] = [
+  {
+    dateTime: "02 Des 2023, 19:00",
+    user: "Jane Cooper",
+    changeType: "Min Stock Change",
+    entity: "Bolt M10",
+    before: "3",
+    after: "3",
+  },
+  {
+    dateTime: "22 Des 2023, 11:40",
+    user: "Eleanor Pena",
+    changeType: "Status Change",
+    entity: "PPE Gloves Small",
+    before: "3",
+    after: "3",
+  },
+  {
+    dateTime: "23 Des 2023, 17:20",
+    user: "Jerome Bell",
+    changeType: "Stock Adjustment",
+    entity: "Grinding Disc",
+    before: "6",
+    after: "6",
+  },
+  {
+    dateTime: "30 Des 2023, 10:04",
+    user: "Brooklyn Simmons",
+    changeType: "Min Stock Change",
+    entity: "Bolt M10",
+    before: "9",
+    after: "9",
+  },
+];
+
+// Extend existing objects with audit data
+(statsData as any).audit = auditLogStats;
+(tableData as any).audit = auditLogData;
+(tableHeaders as any).audit = [
+  "Date & Time",
+  "User",
+  "Change Type",
+  "Entity",
+  "Before",
+  "After",
+  "Actions",
 ];
