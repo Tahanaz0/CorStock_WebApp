@@ -1,15 +1,30 @@
 "use client";
 
 import React from "react";
+import { useRouter } from "next/navigation";
 import { FiChevronDown } from "react-icons/fi";
 import { FiBox, FiShoppingCart, FiClock, FiCheckCircle } from "react-icons/fi";
 import { LuArrowDownRight } from "react-icons/lu";
-import DashboardCharts from "../chart/page";
-import FastVsSlowMover from "../fast-vs-slow-mover/page";
-import OnTimeDeliveryChart from "../OnTimeDeliveryChart/page";
-import SupplierScorecard from "../SupplierScorecard/page";
+import DashboardCharts from "../charts/page";
+import FastVsSlowMover from "../charts/fast-slow-analysis/page";
+import OnTimeDeliveryChart from "../charts/delivery/page";
+import SupplierScorecard from "../charts/supplier-scorecard/page";
+import TopItemsChart from "../charts/top-items/page";
+import MovementChart from "../charts/movement/page";
+import FastSlowMovers from "../charts/FastSlowMovers/page";
+import MovementTable from "./tables/MovementTable";
+import ProcurementTable from "./tables/ProcurementTable";
+import SupplierTable from "./tables/SupplierTable";
+import AuditTable from "./tables/AuditTable";
+import LeadTimeChart from "../charts/Lead-time/page";
+import ShortDelivery from "../charts/delivery/short-delivery/page";
+import { useState } from "react";
+import ScheduleReport from "./Schedule/page"; // adjust the path as needed
+
+// import StockMovementAreaChart from "../components/charts/StockMovementAreaChart";
 
 const Reports = () => {
+  const router = useRouter();
   type TabKey = "inventory" | "movement" | "procurement" | "supplier" | "admin";
 
   const [activeTab, setActiveTab] = React.useState<TabKey>("inventory");
@@ -114,68 +129,69 @@ const Reports = () => {
         buttonText: "Updated 10:45 AM",
       },
     ],
- supplier:  [
-  {
-    title: "On-Time Delivery",
-    amount: "83%",
-    percent: "28.4%",
-    image: "/total-stock.png",
-    buttonText: "Updated 10:45 AM",
-  },
-  {
-    title: "Avg Delay",
-    amount: "3.1 days",
-    percent: "28.4%",
-    image: "/low-stock.png",
-    buttonText: "Updated 10:45 AM",
-  },
-  {
-    title: "Short Deliveries Logged",
-    amount: "32",
-    percent: "28.4%",
-    image: "/fast-mover.png",
-    buttonText: "Updated 10:45 AM",
-  },
-  {
-    title: "Return/Quality Issues",
-    amount: "16",
-    percent: "28.4%",
-    image: "/dead-stock.png",
-    buttonText: "Updated 10:45 AM",
-  },
-],
+    supplier: [
+      {
+        title: "On-Time Delivery",
+        amount: "83%",
+        percent: "28.4%",
+        image: "/total-stock.png",
+        buttonText: "Updated 10:45 AM",
+      },
+      {
+        title: "Avg Delay",
+        amount: "3.1 days",
+        percent: "28.4%",
+        image: "/low-stock.png",
+        buttonText: "Updated 10:45 AM",
+      },
+      {
+        title: "Short Deliveries Logged",
+        amount: "32",
+        percent: "28.4%",
+        image: "/fast-mover.png",
+        buttonText: "Updated 10:45 AM",
+      },
+      {
+        title: "Return/Quality Issues",
+        amount: "16",
+        percent: "28.4%",
+        image: "/dead-stock.png",
+        buttonText: "Updated 10:45 AM",
+      },
+    ],
     admin: [
-  {
-    title: "Stock Adjustments",
-    amount: "837",
-    percent: "28.4%",
-    image: "/total-stock.png",
-    buttonText: "Updated 10:45 AM",
-  },
-  {
-    title: "Over-deliveries",
-    amount: "46",
-    percent: "28.4%",
-    image: "/low-stock.png",
-    buttonText: "Updated 10:45 AM",
-  },
-  {
-    title: "Unmatched POs",
-    amount: "32",
-    percent: "28.4%",
-    image: "/fast-mover.png",
-    buttonText: "Updated 10:45 AM",
-  },
-  {
-    title: "Return/Quality Issues",
-    amount: "16",
-    percent: "28.4%",
-    image: "/dead-stock.png",
-    buttonText: "Updated 10:45 AM",
-  },
-]
+      {
+        title: "Stock Adjustments",
+        amount: "837",
+        percent: "28.4%",
+        image: "/total-stock.png",
+        buttonText: "Updated 10:45 AM",
+      },
+      {
+        title: "Over-deliveries",
+        amount: "46",
+        percent: "28.4%",
+        image: "/low-stock.png",
+        buttonText: "Updated 10:45 AM",
+      },
+      {
+        title: "Unmatched POs",
+        amount: "32",
+        percent: "28.4%",
+        image: "/fast-mover.png",
+        buttonText: "Updated 10:45 AM",
+      },
+      {
+        title: "Return/Quality Issues",
+        amount: "16",
+        percent: "28.4%",
+        image: "/dead-stock.png",
+        buttonText: "Updated 10:45 AM",
+      },
+    ],
   };
   const cardsData = cardsByTab[activeTab];
+  const [isOpen, setIsOpen] = useState(false);
 
   return (
     <>
@@ -190,10 +206,13 @@ const Reports = () => {
             </p>
           </div>
           <div className="flex gap-3">
-            <button className="bg-[#FF8A3D]  px-3 py-2 rounded-lg shadow-sm hover:bg-[#FF8A3D] flex items-center gap-2">
-              <img src="/schedule.png" alt="print" className="w-4 h-4" />
-              Schedule
-            </button>
+          <button
+  className="bg-[#FF8A3D] px-3 py-2 rounded-lg shadow-sm hover:bg-[#FF8A3D] flex items-center gap-2"
+  onClick={() => router.push("/reports/Schadule/page")}  // <-- YE BADLO
+>
+  <img src="/schedule.png" alt="schedule" className="w-4 h-4" />
+  Schedule
+</button>
 
             <button className="border border-gray-300 px-3 py-2 rounded-lg hover:bg-gray-50 flex items-center gap-2">
               <img src="/export.png" alt="export" className="w-4 h-4" />
@@ -311,16 +330,52 @@ const Reports = () => {
             </>
           )}
           {activeTab === "movement" && (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <OnTimeDeliveryChart />
-              <SupplierScorecard />
-            </div>
+            <>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-4">
+                <MovementChart />
+                <TopItemsChart />
+              </div>
+              <FastSlowMovers />
+              <MovementTable />
+            </>
+          )}
+
+          {activeTab === "procurement" && (
+            <>
+              <DashboardCharts />
+              <LeadTimeChart />
+
+              <ProcurementTable />
+            </>
+          )}
+
+          {activeTab === "supplier" && (
+            <>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-4">
+                <OnTimeDeliveryChart />
+                <SupplierScorecard />
+              </div>
+              <ShortDelivery />
+              <SupplierTable />
+            </>
+          )}
+
+          {activeTab === "admin" && (
+            <>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-4">
+                <MovementChart />
+                <TopItemsChart />
+              </div>
+              <AuditTable />
+            </>
           )}
 
           {/* <DashboardCharts />
           <FastVsSlowMover /> */}
         </div>
       </div>
+          {isOpen && <ScheduleReport onClose={() => setIsOpen(false)} />}
+
     </>
   );
 };

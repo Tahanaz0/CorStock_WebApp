@@ -29,6 +29,6 @@
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts",
     "**/*.mts"
-, "app/fast-vs-slow-mover"  ],
+, "app/charts"  ],
   "exclude": ["node_modules"]
 }

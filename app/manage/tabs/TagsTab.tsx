@@ -12,6 +12,7 @@ interface TagsTabProps {
   rowsPerPage: number;
   onPageChange: (page: number) => void;
   onRowsPerPageChange: (rows: number) => void;
+  onActionMenuClick?: (rowData: TagData, event: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
 export default function TagsTab({
@@ -21,6 +22,7 @@ export default function TagsTab({
   rowsPerPage,
   onPageChange,
   onRowsPerPageChange,
+  onActionMenuClick,
 }: TagsTabProps) {
   return (
     <>
@@ -95,7 +97,10 @@ export default function TagsTab({
                     {tag.usageCount}
                   </td>
                   <td className="px-10 py-4">
-                    <button className="text-gray-500 hover:text-gray-700">
+                    <button
+                      onClick={(e) => onActionMenuClick?.(tag, e)}
+                      className="text-gray-500 hover:text-gray-700"
+                    >
                       ⋮
                     </button>
                   </td>

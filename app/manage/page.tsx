@@ -14,12 +14,73 @@ import {
   specialTabs,
   tabTitles,
 } from "./tabs/tabRegistry";
+import ActionModal from "../components/ActionModal/ActionModal";
 
 const Manage = () => {
   const [activeTab, setActiveTab] = useState("users");
   const [page, setPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(24);
+  const [isActionModalOpen, setIsActionModalOpen] = useState(false);
+  const [actionModalPosition, setActionModalPosition] = useState<{
+    top: number;
+    left: number;
+  } | null>(null);
+  const [actionModalRowData, setActionModalRowData] = useState<any>(null);
   const router = useRouter();
+
+  // Mapping of tabs to their add pages
+  const addPageRoutes: { [key: string]: string } = {
+    users: "/add-user",
+    sites: "/add-site",
+    suppliers: "/add-supplier",
+    categories: "/add-category",
+    tags: "/add-tag",
+    templates: "/add-template",
+  };
+
+  const getAddPageRoute = () => {
+    return addPageRoutes[activeTab] || "/add-user";
+  };
+
+  // Handle action menu click
+  const handleActionMenuClick = (
+    rowData: any,
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => {
+    const button = event.currentTarget;
+    const rect = button.getBoundingClientRect();
+    
+    // Calculate positions with modal width and height consideration
+    const modalWidth = 150; // smaller modal width
+    const modalHeight = 130; // approximate height
+    const padding = 10;
+    
+    let left = rect.left - (modalWidth / 2) + (rect.width / 2);
+    left = Math.max(padding, Math.min(left, window.innerWidth - modalWidth - padding));
+    
+    let top = rect.bottom + 5;
+    
+    // Check if modal will go off bottom - if so, position above
+    if (top + modalHeight > window.innerHeight - padding) {
+      top = rect.top - modalHeight - 5;
+    }
+    
+    // Make sure top is not negative
+    top = Math.max(padding, top);
+    
+    setActionModalPosition({
+      top,
+      left,
+    });
+    setActionModalRowData(rowData);
+    setIsActionModalOpen(true);
+  };
+
+  const closeActionModal = () => {
+    setIsActionModalOpen(false);
+    setActionModalPosition(null);
+    setActionModalRowData(null);
+  };
 
   // Get current tab's stats and data
   const getCurrentStats = () => {
@@ -54,7 +115,7 @@ const Manage = () => {
         </div>
         <div className="flex gap-3">
           <button
-            onClick={() => router.push("/add-user")}
+            onClick={() => router.push(getAddPageRoute())}
             className="bg-[#FF8A3D] px-3 py-2 rounded-lg shadow-sm hover:bg-[#FF8A3D]/90 flex items-center gap-2"
           >
             <img src="/plus.png" alt="add" className="w-3 h-3" /> Add New
@@ -73,7 +134,11 @@ const Manage = () => {
             {tabs.map((tab) => (
               <li
                 key={tab.id}
-                onClick={() => setActiveTab(tab.id)}
+                onClick={() => {
+                  setActiveTab(tab.id);
+                  setPage(1);
+                  closeActionModal();
+                }}
                 className={`px-2 py-2 rounded-lg cursor-pointer text-sm transition ${activeTab === tab.id ? "bg-[#FF8A3D] " : "text-gray-500 hover:bg-gray-100 hover:text-gray-700"}`}
               >
                 {tab.label}
@@ -97,6 +162,7 @@ const Manage = () => {
               rowsPerPage={rowsPerPage}
               onPageChange={setPage}
               onRowsPerPageChange={setRowsPerPage}
+              onActionMenuClick={handleActionMenuClick}
             />
           ) : (
             <div className="text-gray-500 text-center py-8">
@@ -105,6 +171,15 @@ const Manage = () => {
           )}
         </div>
       </div>
+
+      {/* Action Modal */}
+      <ActionModal
+        isOpen={isActionModalOpen}
+        position={actionModalPosition}
+        onClose={closeActionModal}
+        rowData={actionModalRowData}
+        tabName={tabTitle}
+      />
     </div>
   );
 };

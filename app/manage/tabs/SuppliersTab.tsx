@@ -12,6 +12,7 @@ interface SuppliersTabProps {
   rowsPerPage: number;
   onPageChange: (page: number) => void;
   onRowsPerPageChange: (rows: number) => void;
+  onActionMenuClick?: (rowData: SupplierData, event: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
 const renderStatusBadge = (status: string) => (
@@ -46,6 +47,7 @@ export default function SuppliersTab({
   rowsPerPage,
   onPageChange,
   onRowsPerPageChange,
+  onActionMenuClick,
 }: SuppliersTabProps) {
   const headers = [
     "Supplier Name",
@@ -123,7 +125,10 @@ export default function SuppliersTab({
                   <td className="px-2 py-3 text-gray-600">{row.posLinked}</td>
                   <td className="px-2 py-3">{renderStatusBadge(row.status)}</td>
                   <td className="px-4 py-3">
-                    <button className="text-gray-500 hover:text-gray-700">
+                    <button
+                      onClick={(e) => onActionMenuClick?.(row, e)}
+                      className="text-gray-500 hover:text-gray-700"
+                    >
                       ⋮
                     </button>
                   </td>

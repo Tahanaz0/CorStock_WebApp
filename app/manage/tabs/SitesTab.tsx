@@ -12,6 +12,7 @@ interface SitesTabProps {
   rowsPerPage: number;
   onPageChange: (page: number) => void;
   onRowsPerPageChange: (rows: number) => void;
+  onActionMenuClick?: (rowData: SiteData, event: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
 const renderStatusBadge = (status: string) => (
@@ -33,6 +34,7 @@ export default function SitesTab({
   rowsPerPage,
   onPageChange,
   onRowsPerPageChange,
+  onActionMenuClick,
 }: SitesTabProps) {
   const headers = ["Site", "Code", "Manager", "Items", "Status", "Actions"];
 
@@ -99,7 +101,10 @@ export default function SitesTab({
                   <td className="px-4 py-4 text-gray-600">{row.items}</td>
                   <td className="px-4 py-4">{renderStatusBadge(row.status)}</td>
                   <td className="px-4 py-3">
-                    <button className="text-gray-500 hover:text-gray-700">
+                    <button
+                      onClick={(e) => onActionMenuClick?.(row, e)}
+                      className="text-gray-500 hover:text-gray-700"
+                    >
                       ⋮
                     </button>
                   </td>
