@@ -126,36 +126,38 @@ export default function UsersTab({
         </div>
 
         {/* Pagination */}
-        <div className="flex justify-between items-center mt-4 text-gray-500 text-sm">
-          <button
-            onClick={() => onPageChange(Math.max(1, page - 1))}
-            disabled={page === 1}
-            className="flex items-center gap-1 border border-[#CDD5DF] rounded-lg px-3 py-1 hover:bg-gray-50 disabled:opacity-50"
-          >
-            <IoArrowBackOutline /> Previous
-          </button>
-          <div className="flex items-center gap-4">
-            <span>Page {page} of 10</span>
-            <select
-              value={rowsPerPage}
-              onChange={(e) => onRowsPerPageChange(Number(e.target.value))}
-              className="border border-gray-300 rounded-lg px-2 py-1 text-sm"
-            >
-              {[10, 24, 50].map((num) => (
-                <option key={num} value={num}>
-                  {num} per page
-                </option>
-              ))}
-            </select>
-          </div>
-          <button
-            onClick={() => onPageChange(page + 1)}
-            disabled={page === 10}
-            className="flex items-center gap-1 border border-[#CDD5DF] rounded-lg px-3 py-1 hover:bg-gray-50 disabled:opacity-50"
-          >
-            Next <IoArrowForward />
-          </button>
-        </div>
+       <div className="flex justify-between items-center mt-4 text-gray-500 text-sm">
+               <button
+                 className="flex items-center gap-1 border border-[#CDD5DF] rounded-lg px-2 py-1"
+                 onClick={() => onPageChange(Math.max(1, page - 1))}
+               >
+                 <IoArrowBackOutline />
+                 Previous
+               </button>
+               <div className="flex items-center gap-4">
+                 <span>Page {page} of 10</span>
+                 <select
+                   value={rowsPerPage}
+                   onChange={(e) => onRowsPerPageChange(Number(e.target.value))}
+                   className=" text-sm"
+                 >
+                   {[10, 24, 50].map((num) => (
+                     <option key={num} value={num}>
+                       Row per page:
+                       {num}
+                     </option>
+                   ))}
+                 </select>
+               </div>
+               <div className="flex items-center gap-2">
+                 <button
+                   onClick={() => onPageChange(page + 1)}
+                   className="flex items-center gap-1 border border-[#CDD5DF] rounded-lg px-2 py-1"
+                 >
+                   Next <IoArrowForward />
+                 </button>
+               </div>
+             </div>
       </div>
     </>
   );

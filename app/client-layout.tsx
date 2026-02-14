@@ -72,6 +72,7 @@ const ClientLayout = ({ children }: ClientLayoutProps) => {
     if (!pathname || !isLayoutVisible) return false;
     return (
       protectedRoutes.includes(pathname) ||
+      protectedRoutes.some(route => pathname.startsWith(route + '/')) || // ✅ Handle sub-routes
       /^\/organization\/[^\/]+$/.test(pathname) || // Org routes
       /^\/add-(user|site|supplier|category|tag|template)$/.test(pathname) || // ✅ ALL add routes
       /^\/manage/.test(pathname) || // ✅ All manage routes

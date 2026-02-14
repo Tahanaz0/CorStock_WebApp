@@ -1,6 +1,7 @@
 "use client";
 
 import { FiMoreVertical } from "react-icons/fi";
+import { IoArrowBackOutline, IoArrowForward } from "react-icons/io5";
 
 interface TemplatesTabProps {
   stats: any[];
@@ -115,41 +116,38 @@ export default function TemplatesTab({
         ))}
 
         {/* Pagination */}
-        <div className="flex justify-between items-center px-6 py-4">
-          <button
-            onClick={() => onPageChange(page - 1)}
-            disabled={page === 1}
-            className="border border-gray-300 px-4 py-2 rounded hover:bg-gray-50 disabled:opacity-50"
-          >
-            Previous
-          </button>
-
-          <div className="flex items-center gap-4">
-            <span className="text-gray-600">
-              Page {page} of {Math.ceil(data.length / rowsPerPage)}
-            </span>
-            <div className="flex items-center gap-2">
-              <span className="text-gray-600">Rows per page:</span>
-              <select
-                value={rowsPerPage}
-                onChange={(e) => onRowsPerPageChange(Number(e.target.value))}
-                className="border border-gray-300 rounded px-2 py-1"
+      <div className="flex justify-between items-center mt-4 text-gray-500 text-sm">
+              <button
+                className="flex items-center gap-1 border border-[#CDD5DF] rounded-lg px-2 py-1"
+                onClick={() => onPageChange(Math.max(1, page - 1))}
               >
-                <option value={12}>12</option>
-                <option value={24}>24</option>
-                <option value={48}>48</option>
-              </select>
+                <IoArrowBackOutline />
+                Previous
+              </button>
+              <div className="flex items-center gap-4">
+                <span>Page {page} of 10</span>
+                <select
+                  value={rowsPerPage}
+                  onChange={(e) => onRowsPerPageChange(Number(e.target.value))}
+                  className=" text-sm"
+                >
+                  {[10, 24, 50].map((num) => (
+                    <option key={num} value={num}>
+                      Row per page:
+                      {num}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => onPageChange(page + 1)}
+                  className="flex items-center gap-1 border border-[#CDD5DF] rounded-lg px-2 py-1"
+                >
+                  Next <IoArrowForward />
+                </button>
+              </div>
             </div>
-          </div>
-
-          <button
-            onClick={() => onPageChange(page + 1)}
-            disabled={page >= Math.ceil(data.length / rowsPerPage)}
-            className="border border-gray-300 px-4 py-2 rounded hover:bg-gray-50 disabled:opacity-50"
-          >
-            Next →
-          </button>
-        </div>
       </div>
     </div>
   );

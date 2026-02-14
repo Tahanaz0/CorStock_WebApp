@@ -18,6 +18,7 @@ const PathChecker = memo(({ pathName, open, setOpen }: PathCheckerProps) => {
   // ----- CHECK IF THE CURRENT PATH IS A PROTECTED ROUTE -----
   const show =
     protectedRoutes.includes(pathName) ||
+    protectedRoutes.some(route => pathName.startsWith(route + '/')) || // ✅ Handle sub-routes
     /^\/organization\/[^\/]+$/.test(pathName) ||
     /^\/add-(user|site|supplier|category|tag|template)$/.test(pathName) ||
     /^\/manage/.test(pathName) ||

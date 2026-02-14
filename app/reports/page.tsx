@@ -19,7 +19,6 @@ import AuditTable from "./tables/AuditTable";
 import LeadTimeChart from "../charts/Lead-time/page";
 import ShortDelivery from "../charts/delivery/short-delivery/page";
 import { useState } from "react";
-import ScheduleReport from "./Schedule/page"; // adjust the path as needed
 
 // import StockMovementAreaChart from "../components/charts/StockMovementAreaChart";
 
@@ -191,7 +190,6 @@ const Reports = () => {
     ],
   };
   const cardsData = cardsByTab[activeTab];
-  const [isOpen, setIsOpen] = useState(false);
 
   return (
     <>
@@ -208,7 +206,7 @@ const Reports = () => {
           <div className="flex gap-3">
           <button
   className="bg-[#FF8A3D] px-3 py-2 rounded-lg shadow-sm hover:bg-[#FF8A3D] flex items-center gap-2"
-  onClick={() => router.push("/reports/Schadule/page")}  // <-- YE BADLO
+  onClick={() => router.push("/reports/Schedule")}  // <-- YE BADLO
 >
   <img src="/schedule.png" alt="schedule" className="w-4 h-4" />
   Schedule
@@ -374,8 +372,6 @@ const Reports = () => {
           <FastVsSlowMover /> */}
         </div>
       </div>
-          {isOpen && <ScheduleReport onClose={() => setIsOpen(false)} />}
-
     </>
   );
 };

@@ -15,6 +15,9 @@ import {
   tabTitles,
 } from "./tabs/tabRegistry";
 import ActionModal from "../components/ActionModal/ActionModal";
+import Modal from "@/app/components/Modal/Modal";
+import AddTagForm from "@/app/components/manage/AddTagForm";
+import AddCategoryForm from "@/app/components/manage/AddCategoryForm";
 
 const Manage = () => {
   const [activeTab, setActiveTab] = useState("users");
@@ -26,6 +29,7 @@ const Manage = () => {
     left: number;
   } | null>(null);
   const [actionModalRowData, setActionModalRowData] = useState<any>(null);
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const router = useRouter();
 
   // Mapping of tabs to their add pages
@@ -115,7 +119,13 @@ const Manage = () => {
         </div>
         <div className="flex gap-3">
           <button
-            onClick={() => router.push(getAddPageRoute())}
+            onClick={() => {
+              if (activeTab === "categories" || activeTab === "tags") {
+                setIsAddModalOpen(true);
+              } else {
+                router.push(getAddPageRoute());
+              }
+            }}
             className="bg-[#FF8A3D] px-3 py-2 rounded-lg shadow-sm hover:bg-[#FF8A3D]/90 flex items-center gap-2"
           >
             <img src="/plus.png" alt="add" className="w-3 h-3" /> Add New
@@ -180,6 +190,19 @@ const Manage = () => {
         rowData={actionModalRowData}
         tabName={tabTitle}
       />
+
+      {/* Add New small modal for Categories/Tags */}
+      <Modal
+        isOpen={isAddModalOpen}
+        onClose={() => setIsAddModalOpen(false)}
+        title={activeTab === "categories" ? "Add New Category" : activeTab === "tags" ? "Add New Tag" : undefined}
+      >
+        {activeTab === "categories" ? (
+          <AddCategoryForm onClose={() => setIsAddModalOpen(false)} />
+        ) : activeTab === "tags" ? (
+          <AddTagForm onClose={() => setIsAddModalOpen(false)} />
+        ) : null}
+      </Modal>
     </div>
   );
 };
