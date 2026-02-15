@@ -1,13 +1,15 @@
 "use client";
 
 import { FiX, FiChevronDown } from "react-icons/fi";
+import React, { MouseEvent } from "react";
+
 
 export default function FilterModal({ onClose }: { onClose: () => void }) {
-  function handleCancel(
-    event: MouseEvent<HTMLButtonElement, MouseEvent>,
-  ): void {
-    throw new Error("Function not implemented.");
-  }
+
+function handleCancel(event: MouseEvent<HTMLButtonElement>) {
+  event.preventDefault(); // optional
+  onClose();
+}
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
@@ -97,7 +99,7 @@ export default function FilterModal({ onClose }: { onClose: () => void }) {
         <div className="flex justify-end gap-3 pt-4 border-t border-[#E6E6E9]">
           <button
             type="button"
-            onClick={handleCancel}
+  onClick={(event: React.MouseEvent<HTMLButtonElement>) => onClose()}
             className="px-4 py-2 text-sm border border-gray-300 rounded-lg hover:bg-gray-50"
           >
             Cancel
