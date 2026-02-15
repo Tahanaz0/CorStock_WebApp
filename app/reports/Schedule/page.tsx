@@ -2,6 +2,7 @@
 
 import React from "react";
 import { useRouter } from "next/navigation";
+import { FiTrash2 } from "react-icons/fi";
 
 const ScheduleReport = () => {
   const router = useRouter();
@@ -56,9 +57,9 @@ const ScheduleReport = () => {
                 <span className="text-gray-400">≫</span>
                 <span
                   className="cursor-pointer hover:text-[#FF8A3D]"
-                  onClick={() => router.push("/manage")}
+                  onClick={() => router.push("/reports")}
                 >
-                  Manage
+                  Report
                 </span>
                 <span className="text-gray-400">≫</span>
                 <span className="text-[#FF8A3D] font-medium">Schedule</span>
@@ -181,7 +182,7 @@ const ScheduleReport = () => {
                 {scheduledReports.map((report, idx) => (
                   <tr
                     key={idx}
-                    className="border-b border-[#E6E6E9] hover:bg-gray-50"
+                    className="border-b border-[#E6E6E9] hover:bg-gray-50 text-[#4B5565]"
                   >
                     <td className="p-4">{report.type}</td>
                     <td className="p-2">{report.frequency}</td>
@@ -189,8 +190,9 @@ const ScheduleReport = () => {
                     <td className="p-2">{report.recipients}</td>
                     <td className="p-2">{report.format}</td>
                     <td className="p-2">
-                      <button className="text-red-500 hover:text-red-700">
-                        🗑️
+                      <button className="text-[#4B5565] hover:text-red-700">
+                        <FiTrash2 />
+
                       </button>
                     </td>
                   </tr>

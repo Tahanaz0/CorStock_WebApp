@@ -19,6 +19,9 @@ import AuditTable from "./tables/AuditTable";
 import LeadTimeChart from "../charts/Lead-time/page";
 import ShortDelivery from "../charts/delivery/short-delivery/page";
 import { useState } from "react";
+// import FilterModal from "../components/FilterModal";
+import { FiFilter } from "react-icons/fi";
+import FilterModal from "./FilterModal";
 
 // import StockMovementAreaChart from "../components/charts/StockMovementAreaChart";
 
@@ -27,6 +30,7 @@ const Reports = () => {
   type TabKey = "inventory" | "movement" | "procurement" | "supplier" | "admin";
 
   const [activeTab, setActiveTab] = React.useState<TabKey>("inventory");
+  const [open, setOpen] = useState(false);
 
   type CardItem = {
     title: string;
@@ -204,23 +208,28 @@ const Reports = () => {
             </p>
           </div>
           <div className="flex gap-3">
-          <button
-  className="bg-[#FF8A3D] px-3 py-2 rounded-lg shadow-sm hover:bg-[#FF8A3D] flex items-center gap-2"
-  onClick={() => router.push("/reports/Schedule")}  // <-- YE BADLO
->
-  <img src="/schedule.png" alt="schedule" className="w-4 h-4" />
-  Schedule
-</button>
+            <button
+              className="bg-[#FF8A3D] px-3 py-2 rounded-lg shadow-sm hover:bg-[#FF8A3D] flex items-center gap-2"
+              onClick={() => router.push("/reports/Schedule")} // <-- YE BADLO
+            >
+              <img src="/schedule.png" alt="schedule" className="w-4 h-4" />
+              Schedule
+            </button>
 
             <button className="border border-gray-300 px-3 py-2 rounded-lg hover:bg-gray-50 flex items-center gap-2">
               <img src="/export.png" alt="export" className="w-4 h-4" />
               Export
             </button>
             <div className="relative inline-block">
-              <button className="border border-gray-300 rounded-lg py-2 px-4 pr-10 text-sm flex items-center">
+              <button
+                onClick={() => setOpen(true)}
+                className="relative border border-gray-300 rounded-lg py-2 px-4 pr-10 text-sm flex items-center "
+              >
                 Filter
                 <FiChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
               </button>
+
+              {open && <FilterModal onClose={() => setOpen(false)} />}
             </div>
           </div>
         </div>
