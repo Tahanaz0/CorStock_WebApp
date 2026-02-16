@@ -9,11 +9,7 @@ import {
   tagsStats,
   statsData,
 } from "./manageData";
-import {
-  tabComponents,
-  specialTabs,
-  tabTitles,
-} from "./tabs/tabRegistry";
+import { tabComponents, specialTabs, tabTitles } from "./tabs/tabRegistry";
 import ActionModal from "../components/ActionModal/ActionModal";
 import Modal from "@/app/components/Modal/Modal";
 import AddTagForm from "@/app/components/manage/AddTagForm";
@@ -46,32 +42,37 @@ const Manage = () => {
     return addPageRoutes[activeTab] || "/add-user";
   };
 
+
+
   // Handle action menu click
   const handleActionMenuClick = (
     rowData: any,
-    event: React.MouseEvent<HTMLButtonElement>
+    event: React.MouseEvent<HTMLButtonElement>,
   ) => {
     const button = event.currentTarget;
     const rect = button.getBoundingClientRect();
-    
+
     // Calculate positions with modal width and height consideration
     const modalWidth = 150; // smaller modal width
     const modalHeight = 130; // approximate height
     const padding = 10;
-    
-    let left = rect.left - (modalWidth / 2) + (rect.width / 2);
-    left = Math.max(padding, Math.min(left, window.innerWidth - modalWidth - padding));
-    
+
+    let left = rect.left - modalWidth / 2 + rect.width / 2;
+    left = Math.max(
+      padding,
+      Math.min(left, window.innerWidth - modalWidth - padding),
+    );
+
     let top = rect.bottom + 5;
-    
+
     // Check if modal will go off bottom - if so, position above
     if (top + modalHeight > window.innerHeight - padding) {
       top = rect.top - modalHeight - 5;
     }
-    
+
     // Make sure top is not negative
     top = Math.max(padding, top);
-    
+
     setActionModalPosition({
       top,
       left,
@@ -117,7 +118,7 @@ const Manage = () => {
             metadata, and platform behaviour.
           </p>
         </div>
-        
+
         <div className="flex flex-row xs:flex-row gap-2 w-full sm:w-auto">
           <button
             onClick={() => {
@@ -129,12 +130,12 @@ const Manage = () => {
             }}
             className="bg-[#FF8A3D] px-3 py-2 rounded-lg shadow-sm hover:bg-[#FF8A3D]/90 flex items-center justify-center gap-2 flex-1 sm:flex-none text-sm sm:text-base"
           >
-            <img src="/plus.png" alt="add" className="w-3 h-3" /> 
+            <img src="/plus.png" alt="add" className="w-3 h-3" />
             <span>Add New</span>
           </button>
-          
+
           <button className="border border-gray-300 px-3 py-2 rounded-lg hover:bg-gray-50 flex items-center justify-center gap-2 flex-1 sm:flex-none text-sm sm:text-base">
-            <img src="/export.png" alt="export" className="w-4 h-4" /> 
+            <img src="/export.png" alt="export" className="w-4 h-4" />
             <span>Export</span>
           </button>
         </div>
@@ -143,7 +144,7 @@ const Manage = () => {
       {/* Main Content - Responsive Layout */}
       <div className="bg-white flex flex-col lg:flex-row gap-3 p-2 sm:p-3 rounded-lg">
         {/* Sidebar Tabs - Horizontal on Mobile, Vertical on Desktop */}
-        <div className="lg:w-40 w-full border border-[#EEF2F6] rounded-lg bg-white overflow-x-auto">
+        <div className="lg:w-30 w-full border border-[#EEF2F6] rounded-lg bg-white overflow-x-auto">
           <ul className="flex lg:flex-col flex-row gap-1 p-2 bg-[#FCFCFD] rounded-lg min-w-max lg:min-w-0">
             {tabs.map((tab) => (
               <li
@@ -154,9 +155,10 @@ const Manage = () => {
                   closeActionModal();
                 }}
                 className={`px-3 py-2 rounded-lg cursor-pointer text-sm transition whitespace-nowrap
-                  ${activeTab === tab.id 
-                    ? "bg-[#FF8A3D] text-black" 
-                    : "text-gray-500 hover:bg-gray-100 hover:text-gray-700"
+                  ${
+                    activeTab === tab.id
+                      ? "bg-[#FF8A3D] text-black"
+                      : "text-gray-500 hover:bg-gray-100 hover:text-gray-700"
                   }`}
               >
                 {tab.label}
@@ -203,8 +205,14 @@ const Manage = () => {
       <Modal
         isOpen={isAddModalOpen}
         onClose={() => setIsAddModalOpen(false)}
-        title={activeTab === "categories" ? "Add New Category" : activeTab === "tags" ? "Add New Tag" : undefined}
-         className="w-full max-w-md mx-4" // Responsive modal width
+        title={
+          activeTab === "categories"
+            ? "Add New Category"
+            : activeTab === "tags"
+              ? "Add New Tag"
+              : undefined
+        }
+        className="w-full max-w-md mx-4"
       >
         <div className="p-4">
           {activeTab === "categories" ? (
