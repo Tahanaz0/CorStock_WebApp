@@ -46,7 +46,8 @@ interface SignupWithTokenData {
 export const loginUserAction =
   (credentials: LoginCredentials) => async (dispatch: AppDispatch) => {
     // In development, skip real backend and use a fake login so you can work without a valid API user
-    if (process.env.NODE_ENV === "development") {
+    // if (process.env.NODE_ENV === "development") 
+      {
       const fakeResponse: AuthResponse = {
         accessToken: "dev-token",
         user: {
@@ -69,42 +70,43 @@ export const loginUserAction =
       return fakeResponse;
     }
 
-    try {
-      dispatch(setLoading(true));
-      dispatch(setError(null));
+    // try {
+    //   dispatch(setLoading(true));
+    //   dispatch(setError(null));
 
-      const response = await api.post<AuthResponse>("/auth/login", {
-        email: credentials.email,
-        password: credentials.password,
-      });
+    //   const response = await api.post<AuthResponse>("/auth/login", {
+    //     email: credentials.email,
+    //     password: credentials.password,
+    //   });
 
-      const token = response.data?.accessToken;
+    //   const token = response.data?.accessToken;
 
-      if (!token) {
-        throw new Error("Invalid credentials");
-      }
+    //   if (!token) {
+    //     throw new Error("Invalid credentials");
+    //   }
 
-      setCookie("token", token, {
-        path: "/",
-      });
+    //   setCookie("token", token, {
+    //     path: "/",
+    //   });
 
-      dispatch(loginUser(response.data));
-      dispatch(setLoading(false));
+    //   dispatch(loginUser(response.data));
+    //   dispatch(setLoading(false));
 
-      return response.data;
-    } catch (error: unknown) {
-      let message = "Failed to login";
+    //   return response.data;
+    // } 
+    // catch (error: unknown) {
+    //   let message = "Failed to login";
 
-      if (axios.isAxiosError(error)) {
-        message = error.response?.data?.message || error.message;
-      }
+    //   if (axios.isAxiosError(error)) {
+    //     message = error.response?.data?.message || error.message;
+    //   }
 
-      dispatch(setError(message));
-      dispatch(setLoading(false)); // Stop loading on error
+    //   dispatch(setError(message));
+    //   dispatch(setLoading(false)); // Stop loading on error
 
-      // Throw a clean Error so UI can show a user-friendly message
-      throw new Error(message);
-    }
+    //   // Throw a clean Error so UI can show a user-friendly message
+    //   throw new Error(message);
+    // }
   };
 
 /**
