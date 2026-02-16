@@ -107,17 +107,18 @@ const Manage = () => {
   const SpecialTabComponent = specialTabs[activeTab];
 
   return (
-    <div className="bg-[#F4F3F3] min-h-screen p-3 font-sans">
-      {/* Header */}
-      <div className="flex justify-between items-center p-3 mb-4">
+    <div className=" mt-15 sm:mt-5 bg-[#F4F3F3] min-h-screen p-3 sm:p-4 md:p-6 md:mt-0 font-sans">
+      {/* Header - Responsive */}
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 p-3 mb-4">
         <div>
-          <h2 className="text-2xl font-semibold">Manage</h2>
-          <p className="text-gray-500 text-sm">
+          <h2 className="text-xl sm:text-2xl font-semibold">Manage</h2>
+          <p className="text-gray-500 text-xs sm:text-sm mt-1">
             Configure CoreStock system settings, users, sites, suppliers,
             metadata, and platform behaviour.
           </p>
         </div>
-        <div className="flex gap-3">
+        
+        <div className="flex flex-row xs:flex-row gap-2 w-full sm:w-auto">
           <button
             onClick={() => {
               if (activeTab === "categories" || activeTab === "tags") {
@@ -126,21 +127,24 @@ const Manage = () => {
                 router.push(getAddPageRoute());
               }
             }}
-            className="bg-[#FF8A3D] px-3 py-2 rounded-lg shadow-sm hover:bg-[#FF8A3D]/90 flex items-center gap-2"
+            className="bg-[#FF8A3D] px-3 py-2 rounded-lg shadow-sm hover:bg-[#FF8A3D]/90 flex items-center justify-center gap-2 flex-1 sm:flex-none text-sm sm:text-base"
           >
-            <img src="/plus.png" alt="add" className="w-3 h-3" /> Add New
+            <img src="/plus.png" alt="add" className="w-3 h-3" /> 
+            <span>Add New</span>
           </button>
-          <button className="border border-gray-300 px-3 py-2 rounded-lg hover:bg-gray-50 flex items-center gap-2">
-            <img src="/export.png" alt="export" className="w-4 h-4" /> Export
+          
+          <button className="border border-gray-300 px-3 py-2 rounded-lg hover:bg-gray-50 flex items-center justify-center gap-2 flex-1 sm:flex-none text-sm sm:text-base">
+            <img src="/export.png" alt="export" className="w-4 h-4" /> 
+            <span>Export</span>
           </button>
         </div>
       </div>
 
-      {/* Main Content */}
-      <div className="bg-white flex gap-3 p-3 rounded-lg">
-        {/* Sidebar Tabs */}
-        <div className="w-40 border border-[#EEF2F6] rounded-lg bg-white">
-          <ul className="flex flex-col gap-1 p-2 bg-[#FCFCFD] rounded-lg">
+      {/* Main Content - Responsive Layout */}
+      <div className="bg-white flex flex-col lg:flex-row gap-3 p-2 sm:p-3 rounded-lg">
+        {/* Sidebar Tabs - Horizontal on Mobile, Vertical on Desktop */}
+        <div className="lg:w-40 w-full border border-[#EEF2F6] rounded-lg bg-white overflow-x-auto">
+          <ul className="flex lg:flex-col flex-row gap-1 p-2 bg-[#FCFCFD] rounded-lg min-w-max lg:min-w-0">
             {tabs.map((tab) => (
               <li
                 key={tab.id}
@@ -149,7 +153,11 @@ const Manage = () => {
                   setPage(1);
                   closeActionModal();
                 }}
-                className={`px-2 py-2 rounded-lg cursor-pointer text-sm transition ${activeTab === tab.id ? "bg-[#FF8A3D] " : "text-gray-500 hover:bg-gray-100 hover:text-gray-700"}`}
+                className={`px-3 py-2 rounded-lg cursor-pointer text-sm transition whitespace-nowrap
+                  ${activeTab === tab.id 
+                    ? "bg-[#FF8A3D] text-black" 
+                    : "text-gray-500 hover:bg-gray-100 hover:text-gray-700"
+                  }`}
               >
                 {tab.label}
               </li>
@@ -158,8 +166,8 @@ const Manage = () => {
         </div>
 
         {/* Main Panel */}
-        <div className="bg-white flex-1 rounded-lg p-4 min-w-0">
-          <h1 className="text-xl font-semibold mb-4">{tabTitle}</h1>
+        <div className="bg-white flex-1 rounded-lg p-3 sm:p-4 min-w-0 overflow-x-auto">
+          <h1 className="text-lg sm:text-xl font-semibold mb-4">{tabTitle}</h1>
 
           {/* Render Tab Component */}
           {SpecialTabComponent ? (
@@ -191,17 +199,20 @@ const Manage = () => {
         tabName={tabTitle}
       />
 
-      {/* Add New small modal for Categories/Tags */}
+      {/* Add New small modal for Categories/Tags - Responsive Modal */}
       <Modal
         isOpen={isAddModalOpen}
         onClose={() => setIsAddModalOpen(false)}
         title={activeTab === "categories" ? "Add New Category" : activeTab === "tags" ? "Add New Tag" : undefined}
+         className="w-full max-w-md mx-4" // Responsive modal width
       >
-        {activeTab === "categories" ? (
-          <AddCategoryForm onClose={() => setIsAddModalOpen(false)} />
-        ) : activeTab === "tags" ? (
-          <AddTagForm onClose={() => setIsAddModalOpen(false)} />
-        ) : null}
+        <div className="p-4">
+          {activeTab === "categories" ? (
+            <AddCategoryForm onClose={() => setIsAddModalOpen(false)} />
+          ) : activeTab === "tags" ? (
+            <AddTagForm onClose={() => setIsAddModalOpen(false)} />
+          ) : null}
+        </div>
       </Modal>
     </div>
   );

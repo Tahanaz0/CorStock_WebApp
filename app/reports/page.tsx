@@ -197,188 +197,214 @@ const Reports = () => {
 
   return (
     <>
-      <div className="bg-[#F4F3F3] min-h-screen p-3 font-sans">
-        {/* Header */}
-        <div className="flex justify-between items-center mb-6">
+      <div className="mt-15 sm:mt-5  bg-[#F4F3F3] min-h-screen p-3 sm:p-4 md:p-6 md:mt-0 font-sans ">
+        {/* Header - Responsive */}
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
           <div>
-            <h2 className="text-2xl font-semibold">Reports</h2>
-            <p className="text-gray-500 text-sm">
+            <h2 className="text-xl sm:text-2xl font-semibold">Reports</h2>
+            <p className="text-gray-500 text-xs sm:text-sm mt-1">
               Analyse stock, usage, procurement and supplier performance across
-              all sites{" "}
+              all sites
             </p>
           </div>
-          <div className="flex gap-3">
+          
+          <div className="flex flex-wrap gap-2 sm:gap-3 w-full sm:w-auto">
             <button
-              className="bg-[#FF8A3D] px-3 py-2 rounded-lg shadow-sm hover:bg-[#FF8A3D] flex items-center gap-2"
-              onClick={() => router.push("/reports/Schedule")} // <-- YE BADLO
+              className="bg-[#FF8A3D] px-3 py-2 rounded-lg shadow-sm hover:bg-[#FF8A3D] flex items-center justify-center gap-2 flex-1 sm:flex-none text-sm sm:text-base"
+              onClick={() => router.push("/reports/Schedule")}
             >
               <img src="/schedule.png" alt="schedule" className="w-4 h-4" />
-              Schedule
+              <span>Schedule</span>
             </button>
 
-            <button className="border border-gray-300 px-3 py-2 rounded-lg hover:bg-gray-50 flex items-center gap-2">
+            <button className="border border-gray-300 px-3 py-2 rounded-lg hover:bg-gray-50 flex items-center justify-center gap-2 flex-1 sm:flex-none text-sm sm:text-base">
               <img src="/export.png" alt="export" className="w-4 h-4" />
-              Export
+              <span>Export</span>
             </button>
-            <div className="relative inline-block">
+            
+            <div className="relative inline-block flex-1 sm:flex-none">
               <button
                 onClick={() => setOpen(true)}
-                className="relative border border-gray-300 rounded-lg py-2 px-4 pr-10 text-sm flex items-center "
+                className="relative border border-gray-300 rounded-lg py-2 px-4 pr-8 text-sm flex items-center justify-center w-full"
               >
                 Filter
-                <FiChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
+                <FiChevronDown className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400" />
               </button>
 
               {open && <FilterModal onClose={() => setOpen(false)} />}
             </div>
           </div>
         </div>
-        <div className="bg-white rounded-lg p-2">
-          <div className="flex gap-2 border m-2 p-1 bg-gray-50 border-gray-200 rounded-lg">
+
+        {/* Main Content */}
+        <div className="bg-white rounded-lg p-2 sm:p-3 md:p-4">
+          {/* Tabs - Responsive */}
+          <div className="flex flex-wrap gap-1 sm:gap-2 border p-1 bg-gray-50 border-gray-200 rounded-lg">
             <button
               onClick={() => setActiveTab("inventory")}
-              className={`px-3 p-2 rounded-lg text-sm font-medium transition-all
-           ${
-             activeTab === "inventory"
-               ? "bg-[#FF8A3D] text-black"
-               : "text-[#697586] hover:bg-[#FF8A3D] hover:text-black"
-           }`}
+              className={`flex-1 sm:flex-none px-2 sm:px-3 p-2 rounded-lg text-xs sm:text-sm font-medium transition-all whitespace-nowrap
+                ${
+                  activeTab === "inventory"
+                    ? "bg-[#FF8A3D] text-black"
+                    : "text-[#697586] hover:bg-[#FF8A3D] hover:text-black"
+                }`}
             >
-              Inventory{" "}
+              Inventory
             </button>
 
             <button
               onClick={() => setActiveTab("movement")}
-              className={`px-3 p-2 rounded-lg text-sm font-medium transition-all
-           ${
-             activeTab === "movement"
-               ? "bg-[#FF8A3D] text-black"
-               : "text-[#697586] hover:bg-[#FF8A3D] hover:text-black"
-           }`}
+              className={`flex-1 sm:flex-none px-2 sm:px-3 p-2 rounded-lg text-xs sm:text-sm font-medium transition-all whitespace-nowrap
+                ${
+                  activeTab === "movement"
+                    ? "bg-[#FF8A3D] text-black"
+                    : "text-[#697586] hover:bg-[#FF8A3D] hover:text-black"
+                }`}
             >
-              Movements & Usage{" "}
+              Movements & Usage
             </button>
 
             <button
               onClick={() => setActiveTab("procurement")}
-              className={`px-3 p-2 rounded-lg text-sm font-medium transition-all
-         ${
-           activeTab === "procurement"
-             ? "bg-[#FF8A3D] text-black"
-             : "text-[#697586] hover:bg-[#FF8A3D] hover:text-black"
-         }`}
+              className={`flex-1 sm:flex-none px-2 sm:px-3 p-2 rounded-lg text-xs sm:text-sm font-medium transition-all whitespace-nowrap
+                ${
+                  activeTab === "procurement"
+                    ? "bg-[#FF8A3D] text-black"
+                    : "text-[#697586] hover:bg-[#FF8A3D] hover:text-black"
+                }`}
             >
-              Procurement & POs{" "}
+              Procurement & POs
             </button>
+            
             <button
               onClick={() => setActiveTab("supplier")}
-              className={`px-3 p-2 rounded-lg text-sm font-medium transition-all
-         ${
-           activeTab === "supplier"
-             ? "bg-[#FF8A3D] text-black"
-             : "text-[#697586] hover:bg-[#FF8A3D] hover:text-black"
-         }`}
+              className={`flex-1 sm:flex-none px-2 sm:px-3 p-2 rounded-lg text-xs sm:text-sm font-medium transition-all whitespace-nowrap
+                ${
+                  activeTab === "supplier"
+                    ? "bg-[#FF8A3D] text-black"
+                    : "text-[#697586] hover:bg-[#FF8A3D] hover:text-black"
+                }`}
             >
-              Supplier Performance{" "}
+              Supplier Performance
             </button>
+            
             <button
               onClick={() => setActiveTab("admin")}
-              className={`px-3 p-2 rounded-lg text-sm font-medium transition-all
-         ${
-           activeTab === "admin"
-             ? "bg-[#FF8A3D] text-black"
-             : "text-[#697586] hover:bg-[#FF8A3D] hover:text-black"
-         }`}
+              className={`flex-1 sm:flex-none px-2 sm:px-3 p-2 rounded-lg text-xs sm:text-sm font-medium transition-all whitespace-nowrap
+                ${
+                  activeTab === "admin"
+                    ? "bg-[#FF8A3D] text-black"
+                    : "text-[#697586] hover:bg-[#FF8A3D] hover:text-black"
+                }`}
             >
-              Audit & Admin{" "}
+              Audit & Admin
             </button>
           </div>
-          {/* INVENTORY TAB CONTENT */}
-          {/* CARDS */}
-          <div className="flex gap-6 border-t p-4 border-[#E6E6E9] -mx-2">
-            <div className="flex gap-4 flex-wrap">
+
+          {/* CARDS - Responsive Grid */}
+          <div className="border-t p-2 sm:p-4 border-[#E6E6E9] -mx-2">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
               {cardsData?.map((item, index) => (
                 <div
                   key={index}
-                  className="w-[225px] border border-[#EEF2F6] p-3 rounded-lg"
+                  className="w-full border border-[#EEF2F6] p-3 rounded-lg"
                 >
                   <div className="flex justify-between items-center mb-2">
-                    <div className="text-sm text-gray-500">{item.title}</div>
-                    <img src={item.image} className="w-7" />
+                    <div className="text-xs sm:text-sm text-gray-500">{item.title}</div>
+                    <img src={item.image} className="w-6 sm:w-7" alt="" />
                   </div>
 
-                  <div className="font-bold">{item.amount}</div>
+                  <div className="font-bold text-base sm:text-lg">{item.amount}</div>
 
-                  <div className="flex justify-between items-center mt-4 border-t pt-3 border-[#E6E6E9] -mx-2">
+                  <div className="flex flex-col xs:flex-row justify-between items-start xs:items-center gap-2 mt-4 border-t pt-3 border-[#E6E6E9] -mx-2 px-2">
                     {activeTab === "inventory" && index === 0 ? (
-                      <button className="relative border border-[#E6E6E9] rounded-lg px-3 pr-8 text-sm">
+                      <button className="relative border border-[#E6E6E9] rounded-lg px-3 pr-8 text-xs sm:text-sm w-full xs:w-auto">
                         {item.buttonText}
                         <FiChevronDown className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400" />
                       </button>
                     ) : (
-                      <span className="text-sm text-gray-500">
+                      <span className="text-xs sm:text-sm text-gray-500">
                         {item.buttonText}
                       </span>
                     )}
 
-                    <span className="flex gap-1 text-sm text-[#EC4F47]">
+                    <span className="flex gap-1 text-xs sm:text-sm text-[#EC4F47]">
                       {item.percent}
-                      <LuArrowDownRight />
+                      <LuArrowDownRight className="w-3 h-3 sm:w-4 sm:h-4" />
                     </span>
                   </div>
                 </div>
               ))}
             </div>
           </div>
+
+          {/* Charts Sections - Responsive */}
           {activeTab === "inventory" && (
             <>
-              <DashboardCharts />
-              <FastVsSlowMover />
+              <div className="px-2 sm:px-4">
+                <DashboardCharts />
+              </div>
+              <div className="px-2 sm:px-4">
+                <FastVsSlowMover />
+              </div>
             </>
           )}
+
           {activeTab === "movement" && (
             <>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-4">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 p-2 sm:p-4">
                 <MovementChart />
                 <TopItemsChart />
               </div>
-              <FastSlowMovers />
-              <MovementTable />
+              <div className="px-2 sm:px-4">
+                <FastSlowMovers />
+              </div>
+              <div className="px-2 sm:px-4 overflow-x-auto">
+                <MovementTable />
+              </div>
             </>
           )}
 
           {activeTab === "procurement" && (
             <>
-              <DashboardCharts />
-              <LeadTimeChart />
-
-              <ProcurementTable />
+              <div className="px-2 sm:px-4">
+                <DashboardCharts />
+              </div>
+              <div className="px-2 sm:px-4">
+                <LeadTimeChart />
+              </div>
+              <div className="px-2 sm:px-4 overflow-x-auto">
+                <ProcurementTable />
+              </div>
             </>
           )}
 
           {activeTab === "supplier" && (
             <>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-4">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 p-2 sm:p-4">
                 <OnTimeDeliveryChart />
                 <SupplierScorecard />
               </div>
-              <ShortDelivery />
-              <SupplierTable />
+              <div className="px-2 sm:px-4">
+                <ShortDelivery />
+              </div>
+              <div className="px-2 sm:px-4 overflow-x-auto">
+                <SupplierTable />
+              </div>
             </>
           )}
 
           {activeTab === "admin" && (
             <>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-4">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 p-2 sm:p-4">
                 <MovementChart />
                 <TopItemsChart />
               </div>
-              <AuditTable />
+              <div className="px-2 sm:px-4 overflow-x-auto">
+                <AuditTable />
+              </div>
             </>
           )}
-
-          {/* <DashboardCharts />
-          <FastVsSlowMover /> */}
         </div>
       </div>
     </>
