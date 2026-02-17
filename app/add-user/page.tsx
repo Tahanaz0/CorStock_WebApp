@@ -2,15 +2,15 @@
 
 import { useState } from "react";
 import { FiChevronDown, FiX } from "react-icons/fi";
-import { useRouter } from "next/navigation"; // ✅ Add this import
-import Link from "next/link"; // ✅ Add this import
+import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 const sites = ["Site A", "Site B", "Site C"];
 
 const AddUser = () => {
   const [fullName, setFullName] = useState("PO-2025-0321");
   const [email, setEmail] = useState("ustil@mail.com");
-  const router = useRouter(); // ✅ Add router
+  const router = useRouter();
 
   // Site Access state
   const [selectedSites, setSelectedSites] = useState<string[]>([
@@ -25,41 +25,40 @@ const AddUser = () => {
     );
   };
 
-  // Handle cancel button click
   const handleCancel = () => {
-    router.push("/manage"); // ✅ Go back to Manage page
+    router.push("/manage");
   };
 
   return (
-    <div className="min-h-screen p-6 shadow-sm">
+      <div className="mt-15 sm:mt-5 bg-[#F4F3F3] min-h-screen p-2 sm:p-4 md:p-6 md:mt-0 font-sans overflow-x-hidden">
       {/* Header with clickable breadcrumb */}
-      <div className="mb-6">
-        <div className="text-sm text-gray-500 flex items-center gap-1">
+      <div className="mb-4 sm:mb-6">
+        <div className="text-xs sm:text-sm text-gray-500 flex items-center gap-1 flex-wrap">
           <Link 
             href="/dashboard" 
-            className="hover:text-[#FF8A3D] transition cursor-pointer"
+            className="hover:text-[#FF8A3D] transition cursor-pointer whitespace-nowrap"
           >
             Dashboard
           </Link>
           <span>/</span>
           <Link 
             href="/manage" 
-            className="hover:text-[#FF8A3D] transition cursor-pointer"
+            className="hover:text-[#FF8A3D] transition cursor-pointer whitespace-nowrap"
           >
             Manage
           </Link>
           <span>/</span>
-          <span className="text-gray-700">Add New</span>
+          <span className="text-gray-700 whitespace-nowrap">Add New</span>
         </div>
       </div>
       
-      <div className="bg-[#FFFFFF] border border-[#EEF2F6] p-5 shadow-sm rounded-lg">
-        <h1 className="text-2xl font-semibold mt-1">New User</h1>
+      <div className="bg-[#FFFFFF] border border-[#EEF2F6] p-4 sm:p-5 shadow-sm rounded-lg">
+        <h1 className="text-xl sm:text-2xl font-semibold mt-1">New User</h1>
         
         {/* Form Card */}
-        <div className="bg-[#FCFCFD] border border-[#EAECF0] rounded-lg p-6">
-          {/* Name & Email */}
-          <div className="grid grid-cols-2 gap-4 mb-5">
+        <div className="bg-[#FCFCFD] border border-[#EAECF0] rounded-lg p-4 sm:p-6">
+          {/* Name & Email - Stack on mobile, side by side on desktop */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-5">
             <div>
               <label className="block text-sm font-medium mb-1 text-[#364152]">
                 Full Name
@@ -85,8 +84,8 @@ const AddUser = () => {
             </div>
           </div>
 
-          {/* Role & Status */}
-          <div className="grid grid-cols-2 gap-4 mb-5">
+          {/* Role & Status - Stack on mobile, side by side on desktop */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-5">
             <div>
               <label className="block text-sm font-medium mb-1 text-[#364152]">
                 Role
@@ -145,7 +144,7 @@ const AddUser = () => {
 
             {/* Dropdown */}
             {openSites && (
-              <div className="absolute z-10 w-full mt-1 bg-white border border-[#CDD5DF] rounded-lg shadow-sm">
+              <div className="absolute z-10 w-full mt-1 bg-white border border-[#CDD5DF] rounded-lg shadow-sm max-h-60 overflow-y-auto">
                 {sites.map((site) => (
                   <label
                     key={site}
@@ -165,15 +164,15 @@ const AddUser = () => {
           </div>
         </div>
 
-        {/* Actions */}
-        <div className="flex justify-end gap-3 bg-[#FFFFFF] border border-[#EEF2F6] p-2 mt-5 shadow-sm rounded-lg">
+        {/* Actions - Stack on mobile, row on desktop */}
+        <div className="flex flex-col-reverse sm:flex-row justify-end gap-2 sm:gap-3 bg-[#FFFFFF] border border-[#EEF2F6] p-3 sm:p-2 mt-5 shadow-sm rounded-lg">
           <button 
-            onClick={handleCancel} // ✅ Now clickable
-            className="px-4 py-2 text-sm border border-gray-300 rounded-lg hover:bg-gray-50 transition"
+            onClick={handleCancel}
+            className="px-4 py-2 text-sm border border-gray-300 rounded-lg hover:bg-gray-50 transition w-full sm:w-auto"
           >
             Cancel
           </button>
-          <button className="px-4 py-2 text-sm bg-[#FF8A3D] text-white rounded-lg hover:opacity-90 transition">
+          <button className="px-4 py-2 text-sm bg-[#FF8A3D] text-white rounded-lg hover:opacity-90 transition w-full sm:w-auto">
             Create
           </button>
         </div>

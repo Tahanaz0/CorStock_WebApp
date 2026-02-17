@@ -49,31 +49,31 @@ const AddSupplierPage = () => {
   };
 
   return (
-    <div className="min-h-screen p-8 bg-white">
+      <div className="mt-15 sm:mt-5 bg-[#F4F3F3] min-h-screen p-2 sm:p-4 md:p-6 md:mt-0 font-sans overflow-x-hidden">
       {/* Breadcrumb */}
-      <div className="mb-8">
-        <div className="text-sm text-gray-600 flex items-center gap-2">
-          <span className="cursor-pointer hover:text-[#FF8A3D]" onClick={() => router.push("/dashboard")}>
+      <div className="mb-4 sm:mb-6 md:mb-8">
+        <div className="text-xs sm:text-sm text-gray-600 flex items-center gap-1 sm:gap-2 flex-wrap">
+          <span className="cursor-pointer hover:text-[#FF8A3D] whitespace-nowrap" onClick={() => router.push("/dashboard")}>
             Dashboard
           </span>
           <span className="text-gray-400">≫</span>
-          <span className="cursor-pointer hover:text-[#FF8A3D]" onClick={() => router.push("/manage")}>
+          <span className="cursor-pointer hover:text-[#FF8A3D] whitespace-nowrap" onClick={() => router.push("/manage")}>
             Manage
           </span>
           <span className="text-gray-400">≫</span>
-          <span className="text-[#FF8A3D] font-medium">New Supplier Info</span>
+          <span className="text-[#FF8A3D] font-medium whitespace-nowrap">New Supplier Info</span>
         </div>
       </div>
       
       {/* Title */}
-      <h1 className="text-3xl font-semibold mb-8 text-[#1F2937]">New Supplier</h1>
+      <h1 className="text-2xl sm:text-3xl font-semibold mb-4 sm:mb-6 md:mb-8 text-[#1F2937]">New Supplier</h1>
       
       {/* Form */}
-      <form onSubmit={handleSubmit} className="space-y-6">
-        {/* Row 1: Name, Type, Email */}
-        <div className="grid grid-cols-3 gap-6">
+      <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-5 md:space-y-6">
+        {/* Row 1: Name, Type, Email - Stack on mobile, side by side on desktop */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 md:gap-6">
           <div>
-            <label className="block text-sm font-medium mb-2 text-[#374151]">
+            <label className="block text-sm font-medium mb-1 sm:mb-2 text-[#374151]">
               Supplier Name
             </label>
             <input
@@ -86,7 +86,7 @@ const AddSupplierPage = () => {
           </div>
 
           <div>
-            <label className="block text-sm font-medium mb-2 text-[#374151]">
+            <label className="block text-sm font-medium mb-1 sm:mb-2 text-[#374151]">
               Supplier Type
             </label>
             <select
@@ -102,7 +102,7 @@ const AddSupplierPage = () => {
           </div>
 
           <div>
-            <label className="block text-sm font-medium mb-2 text-[#374151]">
+            <label className="block text-sm font-medium mb-1 sm:mb-2 text-[#374151]">
               General Email
             </label>
             <input
@@ -116,9 +116,9 @@ const AddSupplierPage = () => {
         </div>
 
         {/* Row 2: Address, Status, Lead Times */}
-        <div className="grid grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 md:gap-6">
           <div>
-            <label className="block text-sm font-medium mb-2 text-[#374151]">
+            <label className="block text-sm font-medium mb-1 sm:mb-2 text-[#374151]">
               Address
             </label>
             <input
@@ -131,7 +131,7 @@ const AddSupplierPage = () => {
           </div>
 
           <div>
-            <label className="block text-sm font-medium mb-2 text-[#374151]">
+            <label className="block text-sm font-medium mb-1 sm:mb-2 text-[#374151]">
               Status
             </label>
             <select
@@ -145,7 +145,7 @@ const AddSupplierPage = () => {
           </div>
 
           <div>
-            <label className="block text-sm font-medium mb-2 text-[#374151]">
+            <label className="block text-sm font-medium mb-1 sm:mb-2 text-[#374151]">
               Lead Times
             </label>
             <select
@@ -162,10 +162,10 @@ const AddSupplierPage = () => {
           </div>
         </div>
 
-        {/* Row 3: Website, Status, Lead Times */}
-        <div className="grid grid-cols-3 gap-6">
+        {/* Row 3: Website (only one field in this row) */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 md:gap-6">
           <div>
-            <label className="block text-sm font-medium mb-2 text-[#374151]">
+            <label className="block text-sm font-medium mb-1 sm:mb-2 text-[#374151]">
               Website
             </label>
             <input
@@ -176,49 +176,18 @@ const AddSupplierPage = () => {
               placeholder="www.techpartsindustrial.com"
             />
           </div>
-
-          <div>
-            <label className="block text-sm font-medium mb-2 text-[#374151]">
-              Status
-            </label>
-            <select
-              value={status}
-              onChange={(e) => setStatus(e.target.value)}
-              className="w-full bg-white text-[#6B7280] border border-[#E5E7EB] rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-[#FF8A3D]"
-            >
-              <option value="Active">Active</option>
-              <option value="Inactive">Inactive</option>
-            </select>
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium mb-2 text-[#374151]">
-              Lead Times
-            </label>
-            <select
-              value={leadTime}
-              onChange={(e) => setLeadTime(e.target.value)}
-              className="w-full bg-white text-[#6B7280] border border-[#E5E7EB] rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-[#FF8A3D]"
-            >
-              <option value="3-5 days">3-5 days</option>
-              <option value="6 days">6 days</option>
-              <option value="6-10 days">6-10 days</option>
-              <option value="11-15 days">11-15 days</option>
-              <option value="15+ days">15+ days</option>
-            </select>
-          </div>
         </div>
 
         {/* Category */}
         <div>
-          <label className="block text-sm font-medium mb-2 text-[#374151]">
+          <label className="block text-sm font-medium mb-1 sm:mb-2 text-[#374151]">
             Category
           </label>
-          <div className="flex gap-2 mb-3">
+          <div className="flex flex-col sm:flex-row gap-2 mb-3">
             <select
               value={category}
               onChange={(e) => setCategory(e.target.value)}
-              className="flex-1 bg-white text-[#6B7280] border border-[#E5E7EB] rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-[#FF8A3D]"
+              className="w-full sm:flex-1 bg-white text-[#6B7280] border border-[#E5E7EB] rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-[#FF8A3D]"
             >
               <option value="">Select Category</option>
               <option value="Electrical">Electrical</option>
@@ -226,6 +195,13 @@ const AddSupplierPage = () => {
               <option value="Tools">Tools</option>
               <option value="Hardware">Hardware</option>
             </select>
+            <button
+              type="button"
+              onClick={handleAddCategory}
+              className="px-4 py-2 bg-[#FF8A3D] text-white rounded-lg text-sm hover:opacity-90 transition w-full sm:w-auto"
+            >
+              Add Category
+            </button>
           </div>
           {/* Category Tags */}
           {categoryTags.length > 0 && (
@@ -250,12 +226,12 @@ const AddSupplierPage = () => {
         </div>
 
         {/* Point of Contact */}
-        <div className="pt-6 border-t border-[#E5E7EB]">
-          <h2 className="text-lg font-semibold mb-6 text-[#1F2937]">Point of Contact</h2>
+        <div className="pt-4 sm:pt-5 md:pt-6 border-t border-[#E5E7EB]">
+          <h2 className="text-base sm:text-lg font-semibold mb-4 sm:mb-6 text-[#1F2937]">Point of Contact</h2>
           
-          <div className="grid grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 md:gap-6">
             <div>
-              <label className="block text-sm font-medium mb-2 text-[#374151]">
+              <label className="block text-sm font-medium mb-1 sm:mb-2 text-[#374151]">
                 Contact Name
               </label>
               <input
@@ -268,7 +244,7 @@ const AddSupplierPage = () => {
             </div>
 
             <div>
-              <label className="block text-sm font-medium mb-2 text-[#374151]">
+              <label className="block text-sm font-medium mb-1 sm:mb-2 text-[#374151]">
                 Contact Number
               </label>
               <input
@@ -281,7 +257,7 @@ const AddSupplierPage = () => {
             </div>
 
             <div>
-              <label className="block text-sm font-medium mb-2 text-[#374151]">
+              <label className="block text-sm font-medium mb-1 sm:mb-2 text-[#374151]">
                 Job Title
               </label>
               <input
@@ -296,17 +272,17 @@ const AddSupplierPage = () => {
         </div>
 
         {/* Action Buttons */}
-        <div className="flex justify-end gap-3 pt-6 border-t border-[#E5E7EB]">
+        <div className="flex flex-col-reverse sm:flex-row justify-end gap-2 sm:gap-3 pt-4 sm:pt-5 md:pt-6 border-t border-[#E5E7EB]">
           <button
             type="button"
             onClick={() => router.push("/manage")}
-            className="px-6 py-2 text-sm font-medium text-gray-700 border border-gray-300 rounded-lg hover:bg-gray-50 transition"
+            className="px-4 sm:px-6 py-2 text-sm font-medium text-gray-700 border border-gray-300 rounded-lg hover:bg-gray-50 transition w-full sm:w-auto"
           >
             Cancel
           </button>
           <button
             type="submit"
-            className="px-6 py-2 text-sm font-medium bg-[#FF8A3D] text-white rounded-lg hover:opacity-90 transition"
+            className="px-4 sm:px-6 py-2 text-sm font-medium bg-[#FF8A3D] text-white rounded-lg hover:opacity-90 transition w-full sm:w-auto"
           >
             Create
           </button>

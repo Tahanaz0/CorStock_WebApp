@@ -82,19 +82,21 @@ export default function SuppliersTab({
       {/* Table Section */}
       <div className="bg-white rounded-xl p-4 shadow border border-gray-100">
         {/* Search & Filter */}
-        <div className="flex justify-between mb-4 items-center border-b border-[#E6E6E9] pb-3">
-          <div className="flex items-center gap-2 border border-gray-300 rounded-lg px-3 py-1">
-            <FiSearch className="text-gray-400" />
-            <input
-              type="text"
-              placeholder="Search"
-              className="outline-none text-sm w-64"
-            />
-          </div>
-          <button className="bg-gray-100 rounded-lg px-3 py-1 text-gray-500 flex items-center gap-2 text-sm">
-            Filters <FiChevronDown className="text-gray-400" />
-          </button>
-        </div>
+      <div className="flex flex-col sm:flex-row justify-between mb-4 items-start sm:items-center border-b border-[#E6E6E9] pb-3 -mx-2 px-2 sm:px-0 gap-3 sm:gap-0">
+              <div className="flex items-center gap-2 border border-gray-300 rounded-lg px-3 w-full sm:w-auto">
+                <FiSearch className="text-gray-400 w-4 h-4 sm:w-5 sm:h-5" />
+                <input
+                  type="text"
+                  placeholder="Search"
+                  className="outline-none py-1.5 sm:py-1 text-sm w-full sm:w-[200px] md:w-[250px]"
+                />
+              </div>
+      
+              <button className="relative border border-[#E6E6E9] rounded-lg px-3 sm:px-2 py-1.5 sm:py-1 pr-8 sm:pr-6 text-gray-500 flex items-center gap-2 text-xs sm:text-sm w-full sm:w-auto justify-center sm:justify-start">
+                Filters
+                <FiChevronDown className="absolute right-3 sm:right-2 top-1/2 -translate-y-1/2 text-gray-400 w-4 h-4" />
+              </button>
+            </div>
 
         {/* Table */}
         <div className="overflow-x-auto border border-[#E6E6E9] rounded-lg">
@@ -139,38 +141,39 @@ export default function SuppliersTab({
         </div>
 
         {/* Pagination */}
-       <div className="flex justify-between items-center mt-4 text-gray-500 text-sm">
-               <button
-                 className="flex items-center gap-1 border border-[#CDD5DF] rounded-lg px-2 py-1"
-                 onClick={() => onPageChange(Math.max(1, page - 1))}
-               >
-                 <IoArrowBackOutline />
-                 Previous
-               </button>
-               <div className="flex items-center gap-4">
-                 <span>Page {page} of 10</span>
-                 <select
-                   value={rowsPerPage}
-                   onChange={(e) => onRowsPerPageChange(Number(e.target.value))}
-                   className=" text-sm"
-                 >
-                   {[10, 24, 50].map((num) => (
-                     <option key={num} value={num}>
-                       Row per page:
-                       {num}
-                     </option>
-                   ))}
-                 </select>
-               </div>
-               <div className="flex items-center gap-2">
-                 <button
-                   onClick={() => onPageChange(page + 1)}
-                   className="flex items-center gap-1 border border-[#CDD5DF] rounded-lg px-2 py-1"
-                 >
-                   Next <IoArrowForward />
-                 </button>
-               </div>
-             </div>
+      <div className="flex flex-col sm:flex-row justify-between items-center p-4 border-t border-gray-200 text-gray-500 text-sm gap-4 sm:gap-0">
+  
+  <button
+    className="flex items-center justify-center gap-1 border border-[#CDD5DF] rounded-lg px-3 py-2 hover:bg-gray-50 w-full sm:w-auto"
+    onClick={() => onPageChange(Math.max(1, page - 1))}
+  >
+    <IoArrowBackOutline className="w-4 h-4" />
+    <span>Previous</span>
+  </button>
+  
+  <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-4">
+    <span className="text-sm whitespace-nowrap">Page {page} of 10</span>
+    <select
+      value={rowsPerPage}
+      onChange={(e) => onRowsPerPageChange(Number(e.target.value))}
+      className="text-sm px-2 py-1 bg-white"
+    >
+      {[10, 24, 50].map((num) => (
+        <option key={num} value={num}>
+          Row per page: {num}
+        </option>
+      ))}
+    </select>
+  </div>
+  
+  <button
+    onClick={() => onPageChange(page + 1)}
+    className="flex items-center justify-center gap-1 border border-[#CDD5DF] rounded-lg px-3 py-2 hover:bg-gray-50 w-full sm:w-auto"
+  >
+    <span>Next</span>
+    <IoArrowForward className="w-4 h-4" />
+  </button>
+</div>
       </div>
     </>
   );

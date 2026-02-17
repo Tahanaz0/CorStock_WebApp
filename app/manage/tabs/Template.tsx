@@ -117,38 +117,39 @@ export default function TemplatesTab({
   </div>
 
   {/* Pagination - Yeh scroll se bahar rahega */}
-  <div className="flex justify-between items-center p-4 border-t border-gray-200 text-gray-500 text-sm">
-    <button
-      className="flex items-center gap-1 border border-[#CDD5DF] rounded-lg px-3 py-2 hover:bg-gray-50"
-      onClick={() => onPageChange(Math.max(1, page - 1))}
+  <div className="flex flex-col sm:flex-row justify-between items-center p-4 border-t border-gray-200 text-gray-500 text-sm gap-4 sm:gap-0">
+  
+  <button
+    className="flex items-center justify-center gap-1 border border-[#CDD5DF] rounded-lg px-3 py-2 hover:bg-gray-50 w-full sm:w-auto"
+    onClick={() => onPageChange(Math.max(1, page - 1))}
+  >
+    <IoArrowBackOutline className="w-4 h-4" />
+    <span>Previous</span>
+  </button>
+  
+  <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-4">
+    <span className="text-sm whitespace-nowrap">Page {page} of 10</span>
+    <select
+      value={rowsPerPage}
+      onChange={(e) => onRowsPerPageChange(Number(e.target.value))}
+      className="text-sm px-2 py-1 bg-white"
     >
-      <IoArrowBackOutline className="w-4 h-4" />
-      <span>Previous</span>
-    </button>
-    
-    <div className="flex items-center gap-4">
-      <span className="text-sm whitespace-nowrap">Page {page} of 10</span>
-      <select
-        value={rowsPerPage}
-        onChange={(e) => onRowsPerPageChange(Number(e.target.value))}
-        className="text-sm  px-2 py-1 bg-white"
-      >
-        {[10, 24, 50].map((num) => (
-          <option key={num} value={num}>
-            Row per page: {num}
-          </option>
-        ))}
-      </select>
-    </div>
-    
-    <button
-      onClick={() => onPageChange(page + 1)}
-      className="flex items-center gap-1 border border-[#CDD5DF] rounded-lg px-3 py-2 hover:bg-gray-50"
-    >
-      <span>Next</span>
-      <IoArrowForward className="w-4 h-4" />
-    </button>
+      {[10, 24, 50].map((num) => (
+        <option key={num} value={num}>
+          Row per page: {num}
+        </option>
+      ))}
+    </select>
   </div>
+  
+  <button
+    onClick={() => onPageChange(page + 1)}
+    className="flex items-center justify-center gap-1 border border-[#CDD5DF] rounded-lg px-3 py-2 hover:bg-gray-50 w-full sm:w-auto"
+  >
+    <span>Next</span>
+    <IoArrowForward className="w-4 h-4" />
+  </button>
+</div>
 </div>
     </div>
   );
