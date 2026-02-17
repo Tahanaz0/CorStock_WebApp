@@ -5,6 +5,7 @@ import { FiSearch } from "react-icons/fi";
 import { HiArrowSmDown, HiArrowSmUp, HiSwitchHorizontal } from "react-icons/hi";
 import { IoArrowBackOutline } from "react-icons/io5";
 import { IoArrowForward } from "react-icons/io5";
+import {FiChevronDown} from "react-icons/fi";
 
 type InventoryRecord = {
   date: string;
@@ -95,21 +96,21 @@ export default function InventoryTable() {
   return (
     <div className="p-4 bg-white shadow rounded-lg mt-3 border border-[#E6E6E9]">
       {/* Search & Filter */}
-      <div className="flex justify-between items-center mb-4">
-        <div className="relative">
-          <FiSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
-          <input
-            type="text"
-            placeholder="Search"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500"
-          />
-        </div>
-        <button className="px-3 py-2 border border-gray-300 rounded-lg bg-white hover:bg-gray-50">
-          Filters
-        </button>
-      </div>
+      <div className="flex flex-col sm:flex-row justify-between mb-4 items-start sm:items-center border-b border-[#E6E6E9] pb-3 -mx-2 px-2 sm:px-0 gap-3 sm:gap-0">
+               <div className="flex items-center gap-2 border border-gray-300 rounded-lg px-3 w-full sm:w-auto">
+                 <FiSearch className="text-gray-400 w-4 h-4 sm:w-5 sm:h-5" />
+                 <input
+                   type="text"
+                   placeholder="Search"
+                   className="outline-none py-1.5 sm:py-1 text-sm w-full sm:w-[200px] md:w-[250px]"
+                 />
+               </div>
+     
+               <button className="relative border border-[#E6E6E9] rounded-lg px-3 sm:px-2 py-1.5 sm:py-1 pr-8 sm:pr-6 text-gray-500 flex items-center gap-2 text-xs sm:text-sm w-full sm:w-auto justify-center sm:justify-start">
+                 Filters
+                 <FiChevronDown className="absolute right-3 sm:right-2 top-1/2 -translate-y-1/2 text-gray-400 w-4 h-4" />
+               </button>
+             </div>
 
       {/* Table */}
       <div className="border-b border-[#E6E6E9]  -mx-4"></div>

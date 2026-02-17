@@ -65,13 +65,13 @@ export default function FastVsSlowMover() {
     <div className="space-y-6 pt-2 bg-gray-50">
       {/* -------- Progress Bars -------- */}
       <div className="bg-white rounded-xl p-4 shadow space-y-4">
-        <div className="flex justify-between items-center mb-2">
-          <h2 className="font-semibold text-gray-700 text-sm">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 sm:gap-0 mb-2">
+          <h2 className="font-semibold text-gray-700 text-sm md:text-base lg:text-lg">
             Fast vs Slow Movers
           </h2>
-          <button className="relative bg-gray-100 rounded-lg px-2 pr-6 text-gray-500 flex items-center gap-2 text-sm">
+          <button className="relative bg-gray-100 rounded-lg px-3 sm:px-4 py-1.5 sm:py-2 pr-8 sm:pr-10 text-gray-500 flex items-center gap-2 text-xs sm:text-sm md:text-base w-full sm:w-auto">
             This Week
-            <FiChevronDown className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400" />
+            <FiChevronDown className="absolute right-2 sm:right-3 top-1/2 -translate-y-1/2 text-gray-400 w-4 h-4 sm:w-5 sm:h-5" />
           </button>
         </div>
 
@@ -98,18 +98,19 @@ export default function FastVsSlowMover() {
       {/* -------- Table -------- */}
       <div className="bg-white rounded-xl p-4 shadow">
         {/* Table Header with search & filter */}
-        <div className="flex justify-between mb-4 items-center border-b border-[#E6E6E9] pb-3 -mx-2">
-          <div className="flex items-center gap-2 border border-gray-300 rounded-lg px-3">
-            <FiSearch className="text-gray-400" />
+        <div className="flex flex-col sm:flex-row justify-between mb-4 items-start sm:items-center border-b border-[#E6E6E9] pb-3 -mx-2 px-2 sm:px-0 gap-3 sm:gap-0">
+          <div className="flex items-center gap-2 border border-gray-300 rounded-lg px-3 w-full sm:w-auto">
+            <FiSearch className="text-gray-400 w-4 h-4 sm:w-5 sm:h-5" />
             <input
               type="text"
               placeholder="Search"
-              className="outline-none py-1 text-sm"
+              className="outline-none py-1.5 sm:py-1 text-sm w-full sm:w-[200px] md:w-[250px]"
             />
           </div>
-          <button className="relative bg-gray-100 rounded-lg px-2 pr-6 text-gray-500 flex items-center gap-2 text-sm">
+
+          <button className="relative border border-[#E6E6E9] rounded-lg px-3 sm:px-2 py-1.5 sm:py-1 pr-8 sm:pr-6 text-gray-500 flex items-center gap-2 text-xs sm:text-sm w-full sm:w-auto justify-center sm:justify-start">
             Filters
-            <FiChevronDown className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400" />
+            <FiChevronDown className="absolute right-3 sm:right-2 top-1/2 -translate-y-1/2 text-gray-400 w-4 h-4" />
           </button>
         </div>
 
@@ -186,8 +187,8 @@ export default function FastVsSlowMover() {
             >
               {[10, 24, 50].map((num) => (
                 <option key={num} value={num}>
-                    Row per page:
-                  {num} 
+                  Row per page:
+                  {num}
                 </option>
               ))}
             </select>

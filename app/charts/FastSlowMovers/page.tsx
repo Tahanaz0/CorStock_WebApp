@@ -39,16 +39,25 @@ export default function FastSlowMovers() {
   return (
     <Card radius="md" withBorder p="lg">
       <Group justify="space-between" mb="md">
-        <Text fw={600}>Fast vs Slow Movers</Text>
+  <Text fw={600} size="sm">
+    Fast vs Slow Movers
+  </Text>
 
-        <Select
-          size="xs"
-          radius="md"
-          defaultValue="This Week"
-          data={["This Week", "This Month", "This Year"]}
-          w={120}
-        />
-      </Group>
+  <Select
+    size="xs"
+    radius="md"
+    defaultValue="This Week"
+    data={["This Week", "This Month", "This Year"]}
+    w={120}
+    styles={{
+      root: {
+        '@media (max-width: 640px)': {
+          width: '100%'
+        }
+      }
+    }}
+  />
+</Group>
 
       <Group align="flex-start" grow>
 

@@ -119,7 +119,7 @@ const Manage = () => {
           </p>
         </div>
 
-        <div className="flex flex-row xs:flex-row gap-2 w-full sm:w-auto">
+        <div className="flex flex-col sm:flex-col md:flex-row  gap-2 w-full sm:w-auto">
           <button
             onClick={() => {
               if (activeTab === "categories" || activeTab === "tags") {
@@ -144,8 +144,8 @@ const Manage = () => {
       {/* Main Content - Responsive Layout */}
       <div className="bg-white flex flex-col lg:flex-row gap-3 p-2 sm:p-3 rounded-lg">
         {/* Sidebar Tabs - Horizontal on Mobile, Vertical on Desktop */}
-        <div className="lg:w-30 w-full border border-[#EEF2F6] rounded-lg bg-white overflow-x-auto">
-          <ul className="flex lg:flex-col flex-row gap-1 p-2 bg-[#FCFCFD] rounded-lg min-w-max lg:min-w-0">
+        <div className="lg:w-32 w-full border border-[#EEF2F6] rounded-lg bg-white overflow-x-auto">
+          <ul className="flex lg:flex-col flex-row gap-1 p-1 bg-[#FCFCFD] rounded-lg min-w-max lg:min-w-0">
             {tabs.map((tab) => (
               <li
                 key={tab.id}
